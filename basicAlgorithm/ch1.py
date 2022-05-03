@@ -46,21 +46,33 @@ def create_random_num():
     while n is None:
         try:
             temp = int(input('Enter numbers to be created: ').strip())
+            if temp < 0:
+                raise TypeError
             n = temp
         except ValueError:
             print('Enter integer number only!')
+        except TypeError:
+            print(f'Enter the bigger value then 0!')
     while start is None:
         try:
             temp = int(input('Enter minimum number for range: ').strip())
+            if temp < 0:
+                raise TypeError
             start = temp
         except ValueError:
             print('Enter integer number only!')
+        except TypeError:
+            print(f'Enter the bigger value then 0!')
     while end is None:
         try:
             temp = int(input('Enter maximum number for range: ').strip())
+            if temp <= start:
+                raise TypeError
             end = temp
         except ValueError:
             print('Enter integer number only!')
+        except TypeError:
+            print(f'Enter the bigger value then {start}!')
     return n, start, end
 
 
