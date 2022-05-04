@@ -100,7 +100,7 @@ def get_maximum_simple():
 def get_maximum_advanced():
     n, start, end = create_random_num()
     rand_list = [random.randint(start, end) for _ in range(n)]
-    print('list created: ', end='')
+    print('list created: ')
     pprint.pprint(rand_list)
     rand_list.sort(reverse=True)  # dependent sorting
     max_num = rand_list[0]  # First index is maximum
@@ -116,7 +116,7 @@ def get_median_simple():
 def get_median_advanced():
     n, start, end = create_random_num()
     rand_list = [random.randint(start, end) for _ in range(n)]
-    print('list created: ', end='')
+    print('list created: ')
     pprint.pprint(rand_list)
     rand_list.sort()  # ascendant sorting
 
