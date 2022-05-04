@@ -245,12 +245,12 @@ def deep_copy_example():
 
 
 if __name__ == "__main__":
-    # compare_lists()
-    # sequence_computing()
-    # find_maximum()
-    # annotation_test()
-    # iter_test()
-    # card_conv_test()
-    # change_test()
-    # find_all_decimal()
+    compare_lists()
+    sequence_computing()
+    find_maximum()
+    annotation_test()
+    iter_test()
+    card_conv_test()
+    change_test()
+    find_all_decimal()
     deep_copy_example()
