@@ -1,5 +1,5 @@
 """
-    Ch1 Basic of Data Structure and Sequences(기본 자료구조와 배열)
+    Ch2 Basic of Data Structure and Sequences(기본 자료구조와 배열)
     * Skipped too simple examples
 
     * important notes
@@ -34,6 +34,7 @@ from ch1 import create_random_num
 from random import randint, uniform
 from pprint import pprint
 from copy import deepcopy
+
 
 def compare_lists():
     list1 = [1, 2, 3]
