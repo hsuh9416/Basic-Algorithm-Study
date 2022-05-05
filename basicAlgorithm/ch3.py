@@ -23,7 +23,6 @@ from ch2 import rand_list
 
 
 def seq_search(a: Sequence, key: Any) -> Any:  # Simple linear Search
-    i = 0
     for i in range(len(a)):
         if a[i] == key:
             return i
@@ -32,7 +31,6 @@ def seq_search(a: Sequence, key: Any) -> Any:  # Simple linear Search
 
 def seq_search_advanced(a: list, key: Any) -> Any:  # Sentinel method applied
     li = a[:] + [key]  # To avoid modification!
-    i = 0
     for i in range(len(li)):
         if li[i] == key:
             return i
