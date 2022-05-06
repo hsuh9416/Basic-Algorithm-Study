@@ -15,11 +15,22 @@
     3) Binary search
         => Sort, Divide, Search
         => Time complexity(logarithmic time): O(log n)
-
+    4) Hash-based search
+        => Easily capable for Data Search & Data insert & Data delete
+        => Hash function: function that transfers key(value of element) to hash value(index of element)
+        => Hash table: Table mapped the hash value as a key and the element value(bucket)
+        => the key for hashing == the value of element == the value ot the hash table == bucket assigned value
+        => the value of hashing == the hash value == the index of the hash table == bucket slot
+        => [key:hash value = n:1] == [hash value:bucket assigned = 1:n] ---> Hash collision occurs!
+        => Solution for hash collision
+            a> Chaining(Open hashing): manage values within tha same hash value by linked list
+            b> Open address method: Repeat hashing until finding empty bucket slot for the value
 
 """
-from typing import Any, Sequence
+from __future__ import annotations
+from typing import Any, Sequence, Type
 from ch2 import rand_list
+import hashlib
 
 
 def seq_search(a: Sequence, key: Any) -> Any:  # Simple linear Search
@@ -64,6 +75,26 @@ def get_list_key():  # General function to create list and key
         except ValueError:
             print('Enter integer number only!')
     return li, ky
+
+
+class Node:  # Node(= bucket) class to compose hashing
+
+    def __init__(self, key: Any, value: Any, next: Node) -> None:  # Initialization
+        self.key = key  # Key
+        self.value = value  # Value
+        self.next = next  # Referencing next Node
+
+
+class ChainedHash:
+
+    def __init__(self, capacity: int) -> None:
+        self.capacity = capacity  # Size of hash table
+        self.table = [None] * self.capacity  # Declare hash table(list), empty bucket assigned as 'None'
+
+    def hash_value(self, key: Any) -> int:
+        if isinstance(key, int):
+            return key % self.capacity
+        return int(hashlib.sha256(str(key).encode()).hexdigest(), 16) % self.capacity
 
 
 def seq_search_test():  # Simple linear Search Test
