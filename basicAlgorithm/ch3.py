@@ -22,15 +22,38 @@
         => the key for hashing == the value of element == the value ot the hash table == bucket assigned value
         => the value of hashing == the hash value == the index of the hash table == bucket slot
         => [key:hash value = n:1] == [hash value:bucket assigned = 1:n] ---> Hash collision occurs!
-        => Solution for hash collision
-            a> Chaining(Open hashing): manage values within tha same hash value by linked list
-            b> Open address method: Repeat hashing until finding empty bucket slot for the value
-
+    5) Solution for hash collision - Chaining
+        => Chaining(Open hashing): manage values within tha same hash value by linked list
+        => How search function works:
+            a> Change key to hash value
+            b> Find bucket having hash value as index
+            c> Search the linked list in the bucket(Applies linear Search for the linked list)
+            d> Success: Return the hash value
+               Fail: Return None
+        => How add function works:
+            a> Change key to hash value
+            b> Find bucket having hash value as index
+            c> Search the linked list in the bucket(Applies linear Search for the linked list)
+            d> Success: Add the node object to hash table and return True
+               Fail: Return False
+        => How delete function works:
+            a> Change key to hash value
+            b> Find bucket having hash value as index
+            c> Search the linked list in the bucket(Applies linear Search for the linked list)
+            d> Success: Delete the node object to hash table and return True
+               Fail: Return False
+    6) Solution for hash collision - Open address method
+        => Open address method(Closed hashing: Repeat hashing(rehashing) until finding empty bucket slot for the value
+        => Also called as 'Linear probing'
 """
 from __future__ import annotations
-from typing import Any, Sequence, Type
+from typing import Any, Sequence
 from ch2 import rand_list
 import hashlib
+from enum import Enum
+
+
+Menu = Enum('Menu',['Add','Delete','Search','Dump','Terminate'])
 
 
 def seq_search(a: Sequence, key: Any) -> Any:  # Simple linear Search
@@ -92,9 +115,63 @@ class ChainedHash:
         self.table = [None] * self.capacity  # Declare hash table(list), empty bucket assigned as 'None'
 
     def hash_value(self, key: Any) -> int:
-        if isinstance(key, int):
+        """ Calculate hash value"""
+        if isinstance(key, int):  # If key was int
             return key % self.capacity
-        return int(hashlib.sha256(str(key).encode()).hexdigest(), 16) % self.capacity
+        return int(hashlib.sha256(str(key).encode()).hexdigest(), 16) % self.capacity  # If key was not int
+
+    def search(self, key: Any) -> Any:
+        """ Search the hash value """
+        t_hash = self.hash_value(key)
+        p = self.table[t_hash]
+
+        while p is not None:  # If the next was 'None'(no more element exists) then terminate the loop
+            if p.key == key:
+                return p.value  # Return the value of node
+            p = p.next  # Find next node
+
+        return None  # Search fail!
+
+    def add(self, key: Any, value: Any) -> bool:
+        """ Add the hash value to the hash table"""
+        t_hash = self.hash_value(key)
+        p = self.table[t_hash]
+
+        while p is not None:  # If the next was 'None'(no more element exists) then terminate the loop
+            if p.key == key:
+                return False  # Fail to add
+            p = p.next  # Find next node
+
+        temp = Node(key, value, self.table[t_hash])  # Generate node object
+        self.table[t_hash] = temp  # Add the node object
+        return True  # Success to add
+
+    def remove(self, key:Any) -> bool:
+        """ Delete the hash value from the hash table """
+        t_hash = self.hash_value(key)
+        p = self.table[t_hash]  # Current Node
+        pp = None  # Previous node
+
+        while p is not None:  # If the next was 'None'(no more element exists) then terminate the loop
+            if p.key == key:
+                if pp is None:
+                    self.table[t_hash] = p.next  # Replace current node as the next node
+                else:
+                    pp.next = p.next  # Make new connection skipping target hash value
+                return True  # Success to delete
+            pp = p  # Set current node as previous node
+            p = p.next  # Set next node as current node
+        return False  # Fail to delete
+
+    def dump(self) -> None:
+        """ Dump the hash table """
+        for i in range(self.capacity):  # print each bucket
+            p = self.table[i]
+            print(i, end='')
+            while p is not None:  # print linked list elements in each bucket
+                print(f' -> {p.key} {p.value}', end='')
+                p = p.next
+            print()
 
 
 def seq_search_test():  # Simple linear Search Test
@@ -128,7 +205,55 @@ def binary_search_test():  # Simple binary Search Test
         print(f'Index Number of number {ky} from the list = {result}')
 
 
+def select_menu() -> Menu:
+    s = [f'({m.value}){m.name}' for m in Menu]
+    while True:
+        try:
+            print(*s, sep='  ', end='')
+            choice = int(input(': ').strip())
+            if not 1 <= choice <= len(Menu):
+                raise TypeError
+            return Menu(choice)
+        except ValueError:
+            print('Enter integer number only!')
+        except TypeError:
+            print(f'Please enter the number from 1 to {len(Menu)}!')
+
+
+def hashing_chaining_test():  # Hashing(applied chained hash) test
+    hash_table = ChainedHash(13)  # Generate hash table with a capacity of 13
+
+    while True:
+        menu = select_menu()
+
+        if menu == Menu.Add:  # Add the key, value to the hash table
+            key = int(input('Enter the key to add: '))
+            value = input('Enter the value to add: ')
+            if not hash_table.add(key, value):
+                print('Fail to add the value!')
+
+        elif menu == Menu.Delete:  # Remove the value from the hash table
+            key = int(input('Enter the key to delete: '))
+            if not hash_table.remove(key):
+                print('Fail to remove')
+
+        elif menu == Menu.Search:  # Search from the hash table
+            key = int(input('Enter the key to search: '))
+            t = hash_table.search(key)
+            if t is not None:
+                print(f'The value of the key "{key}" is "{t}"')
+            else:
+                print(f'The value of the key "{key}" does not exist!')
+
+        elif menu == Menu.Dump:  # Show the hash table
+            hash_table.dump()
+
+        else:
+            break
+
+
 if __name__ == '__main__':
-    # seq_search_test()
-    # sentinel_method_test()
+    seq_search_test()
+    sentinel_method_test()
     binary_search_test()
+    hashing_chaining_test()
