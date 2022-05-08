@@ -192,6 +192,101 @@ class ChainedHash:
             print()
 
 
+class Status(Enum):  # Status of bucket
+    OCCUPIED = 0
+    EMPTY = 1
+    DELETED = 2
+
+
+class Bucket:
+
+    def __init__(self, key: Any = None, value: Any = None,
+                 stat: Status = Status.EMPTY) -> None:
+        self.key = key
+        self.value = value
+        self.stat = stat
+
+    def set(self, key: Any, value: Any, stat: Status) -> None:
+        self.key = key
+        self.value = value
+        self.stat = stat
+
+    def set_status(self, stat: Status) -> None:
+        self.stat = stat
+
+
+class OpenHash:
+
+    def __init__(self, capacity: int) -> None:
+        self.capacity = capacity  # Size of hash table
+        self.table = [Bucket()] * self.capacity  # Declare hash table(list), Initialize Bucket Class
+
+    def hash_value(self, key: Any) -> int:
+        """ Calculate hash value"""
+        if isinstance(key, int):  # If key was int
+            return key % self.capacity
+        return int(hashlib.sha256(str(key).encode()).hexdigest(), 16) % self.capacity  # If key was not int
+
+    def rehash_value(self, key: Any) -> int:
+        """ Calculate rehash value"""
+        return (self.hash_value(key) + 1) % self.capacity
+
+    def search_node(self, key: Any) -> Any:
+        """ Find bucket having the key """
+        t_hash = self.hash_value(key)
+        p = self.table[t_hash]
+
+        for i in range(self.capacity):
+            if p.stat == Status.EMPTY:
+                break  # Search fail
+            elif p.stat == Status.OCCUPIED and p.key == key:
+                return p  # Search Success
+            t_hash = self.rehash_value(t_hash)  # Rehash and try search again
+            p = self.table[t_hash]
+        return None  # Search fail
+
+    def search(self, key: Any) -> Any:
+        """ Search the hash value """
+        p = self.search_node(key)
+        return p.value if p is not None else None
+
+    def add(self, key: Any, value: Any) -> bool:
+        """ Add the hash value to the hash table"""
+        if self.search(key) is not None:
+            return False  # Occupied already
+
+        t_hash = self.hash_value(key)
+        p = self.table[t_hash]
+
+        for i in range(self.capacity):
+            if p.stat == Status.EMPTY or p.stat == Status.DELETED:
+                self.table[t_hash] = Bucket(key, value, Status.OCCUPIED)
+                return True  # Success to add
+            t_hash = self.rehash_value(t_hash)  # The original index had been occupied => rehashing
+            p = self.table[t_hash]
+
+        return False  # Unable to assign the value even after rehashing -> Fail to add
+
+    def remove(self, key: Any) -> bool:
+        """ Delete the hash value from the hash table """
+        p = self.search_node(key)
+        if p is None:
+            return False  # Cannot remove the value does not exist -> Fail to remove
+        p.set_status(Status.DELETED) # Set the status to 'Deleted'
+        return True # Success to remove
+
+    def dump(self) -> None:
+        """ Dump the hash table """
+        for i in range(self.capacity):  # print each bucket
+            print(f'{i:2} ', end='')
+            if self.table[i].stat == Status.OCCUPIED:
+                print(f'{self.table[i].key} ({self.table[i].value})')
+            elif self.table[i].stat == Status.EMPTY:
+                print(' -- Unoccupied --')
+            elif self.table[i].stat == Status.DELETED:
+                print(' -- Deleted --')
+
+
 def seq_search_test():  # Simple linear Search Test
     li, ky = get_list_key()
     result = seq_search(li, ky)
@@ -238,9 +333,7 @@ def select_menu() -> Menu:
             print(f'Please enter the number from 1 to {len(Menu)}!')
 
 
-def hashing_chaining_test():  # Hashing(applied chained hash) test
-    hash_table = ChainedHash(13)  # Generate hash table with a capacity of 13
-
+def run_menu(hash_table: Any) -> None:
     while True:
         menu = select_menu()
 
@@ -270,8 +363,19 @@ def hashing_chaining_test():  # Hashing(applied chained hash) test
             break
 
 
+def hashing_chaining_test():  # Hashing(applied chained hash) test
+    hash_table = ChainedHash(13)  # Generate hash table with a capacity of 13
+    run_menu(hash_table)
+
+
+def open_address_test():  # Hashing(applied chained hash) test
+    hash_table = OpenHash(13)  # Generate hash table with a capacity of 13
+    run_menu(hash_table)
+
+
 if __name__ == '__main__':
-    # seq_search_test()
-    # sentinel_method_test()
-    # binary_search_test()
-    # hashing_chaining_test()
+    seq_search_test()
+    sentinel_method_test()
+    binary_search_test()
+    hashing_chaining_test()
+    open_address_test()
