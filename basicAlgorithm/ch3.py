@@ -45,6 +45,24 @@
     6) Solution for hash collision - Open address method
         => Open address method(Closed hashing: Repeat hashing(rehashing) until finding empty bucket slot for the value
         => Also called as 'Linear probing'
+        => How add function works:
+            a> Change key to hash value
+            b> Find bucket having hash value as index
+            c> If bucket was empty => Add value to the bucket
+               Else => rehashing ex) If 18 % 13 is not 'None', then try (18 + 1) % 13 !
+            d> Try until find blank bucket
+        => How delete function works:
+            a> Change key to hash value
+            b> Find bucket having hash value as index
+            c> Add attribute to the bucket as 'Deleted'
+            d> 'Deleted' means the target data been stored to another bucket(by rehashing)
+        => How search function works:
+            a> Change key to hash value
+            b> Find bucket having hash value as index
+            c> If target bucket was 'None' => Search failed
+               If target bucket was 'Deleted' => rehashing/researching
+            d> Repeat until facing with 'None' or target bucket
+
 """
 from __future__ import annotations
 from typing import Any, Sequence
@@ -53,7 +71,7 @@ import hashlib
 from enum import Enum
 
 
-Menu = Enum('Menu',['Add','Delete','Search','Dump','Terminate'])
+Menu = Enum('Menu', ['Add', 'Delete', 'Search', 'Dump', 'Terminate'])
 
 
 def seq_search(a: Sequence, key: Any) -> Any:  # Simple linear Search
@@ -146,7 +164,7 @@ class ChainedHash:
         self.table[t_hash] = temp  # Add the node object
         return True  # Success to add
 
-    def remove(self, key:Any) -> bool:
+    def remove(self, key: Any) -> bool:
         """ Delete the hash value from the hash table """
         t_hash = self.hash_value(key)
         p = self.table[t_hash]  # Current Node
@@ -253,7 +271,7 @@ def hashing_chaining_test():  # Hashing(applied chained hash) test
 
 
 if __name__ == '__main__':
-    seq_search_test()
-    sentinel_method_test()
-    binary_search_test()
-    hashing_chaining_test()
+    # seq_search_test()
+    # sentinel_method_test()
+    # binary_search_test()
+    # hashing_chaining_test()
