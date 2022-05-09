@@ -318,24 +318,24 @@ def binary_search_test():  # Simple binary Search Test
         print(f'Index Number of number {ky} from the list = {result}')
 
 
-def select_menu() -> Menu:
-    s = [f'({m.value}){m.name}' for m in Menu]
+def select_menu(menu: Any) -> Menu:
+    s = [f'({m.value}){m.name}' for m in menu]
     while True:
         try:
             print(*s, sep='  ', end='')
             choice = int(input(': ').strip())
-            if not 1 <= choice <= len(Menu):
+            if not 1 <= choice <= len(menu):
                 raise TypeError
-            return Menu(choice)
+            return menu(choice)
         except ValueError:
             print('Enter integer number only!')
         except TypeError:
-            print(f'Please enter the number from 1 to {len(Menu)}!')
+            print(f'Please enter the number from 1 to {len(menu)}!')
 
 
 def run_menu(hash_table: Any) -> None:
     while True:
-        menu = select_menu()
+        menu = select_menu(Menu)
 
         if menu == Menu.Add:  # Add the key, value to the hash table
             key = int(input('Enter the key to add: '))
