@@ -33,6 +33,7 @@
             => The front/rear are logical order but not physical order
             => The front/rear will be updated when enqueue/dequeue executed
             => The complexity of ring buffer executions are all the same as O(1)
+            => Application: The program dequeues old data whenever new data enqueues(for the same number)
 
 """
 from typing import Any
