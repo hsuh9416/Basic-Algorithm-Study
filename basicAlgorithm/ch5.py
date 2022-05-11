@@ -11,6 +11,14 @@
         => Divide the bigger number by the smaller number(**)
         => left rectangle will consist two sides: the smaller number, the remainder after division(**)
         => At the point of no remainder, the smaller number used for division will be the greatest common divisor
+    4) Approach of recursive algorithm
+        => genuinely recursive function: function that executes recursive calls multiple times
+        a> Top-down analysis: From first function to last function to be reached
+        b> Bottem-up analysis: From first trial to last commitment
+        c> In order to transform function from recursive to non-recursive
+            => The variable from the previous execution should be temporary store
+            => Use stack to store data
+
 
 """
 # import math
