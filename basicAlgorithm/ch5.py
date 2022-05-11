@@ -22,6 +22,7 @@
 
 """
 # import math
+from ch4 import Stack
 
 
 def factorial(n: int) -> int:
@@ -34,6 +35,29 @@ def gcd(x: int, y: int) -> int:  # Greatest common divisor(By Euclidean algorith
         return x
     else:
         return gcd(y, x % y)
+
+
+def recur(n: int) -> int:  # Genuinely recursive function
+    if n > 0:
+        recur(n - 1)
+        print(n)
+        recur(n - 2)
+
+
+def non_recur(n: int) -> int:  # None recursive function acts the same as recursive function
+    s = Stack(n)
+
+    while True:
+        if n > 0:
+            s.push(n)
+            n = n - 1
+            continue
+        if not s.is_empty():
+            n = s.pop()
+            print(n)
+            n = n - 2
+            continue
+        break
 
 
 def basic_recursion_test():
@@ -71,6 +95,27 @@ def basic_recursion_test2():
     print(f'The greatest common divisor of {m} and {n} is {gcd(m, n)}')
 
 
+def basic_recursion_test3():
+    n = None
+    while n is None:
+        try:
+            temp = int(input('Enter the first number: ').strip())
+            if temp < 0:
+                raise TypeError
+            n = temp
+        except ValueError:
+            print('Enter integer number only!')
+        except TypeError:
+            print(f'Enter the bigger value then 0!')
+
+    print('*' * 20 + 'Recursive Function' + '*' * 20)
+    recur(n)
+
+    print('*' * 20 + 'Non Recursive Function' + '*' * 16)
+    non_recur(n)
+
+
 if __name__ == '__main__':
     # basic_recursion_test()
-    basic_recursion_test2()
+    # basic_recursion_test2()
+    basic_recursion_test3()
