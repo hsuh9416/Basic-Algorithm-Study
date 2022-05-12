@@ -60,6 +60,16 @@ def non_recur(n: int) -> int:  # None recursive function acts the same as recurs
         break
 
 
+def move(disk_num: int, depart: int, arrive: int) -> None:
+    if disk_num > 1:  # Moving the other disks to the middle tower
+        move(disk_num - 1, depart, 6 - depart - arrive)  # Since 1+2+3=6, next arrival be at the remained tower
+
+    print(f'Move [{disk_num}] from {depart} to {arrive}')  # Moving the last dist to the target tower
+
+    if disk_num > 1:
+        move(disk_num - 1, 6 - depart - arrive, arrive)  # Moving the other disks to the target tower
+
+
 def basic_recursion_test():
     n = None
     while n is None:
@@ -115,7 +125,23 @@ def basic_recursion_test3():
     non_recur(n)
 
 
+def hanoi_test():
+    print('Play Tower of Hanoi:)')
+    n = None
+    while n is None:
+        try:
+            temp = int(input('Enter the number of disks: ').strip())
+            if temp < 0:
+                raise TypeError
+            n = temp
+        except ValueError:
+            print('Enter integer number only!')
+        except TypeError:
+            print(f'Enter the bigger value then 0!')
+    move(n, 1, 3)
+
+
 if __name__ == '__main__':
     # basic_recursion_test()
     # basic_recursion_test2()
-    basic_recursion_test3()
+    hanoi_test()
