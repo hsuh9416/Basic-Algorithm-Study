@@ -18,7 +18,9 @@
         c> In order to transform function from recursive to non-recursive
             => The variable from the previous execution should be temporary store
             => Use stack to store data
-
+        d> Branching method: Dividing procedure to illustrate combinations
+        e> Bounding method: Removing unnecessary branches to reduce the number of combinations
+        f> Branching and bounding method: Combining bounding and branching
 
 """
 # import math
@@ -68,6 +70,30 @@ def move(disk_num: int, depart: int, arrive: int) -> None:
 
     if disk_num > 1:
         move(disk_num - 1, 6 - depart - arrive, arrive)  # Moving the other disks to the target tower
+
+
+def put(pos: list) -> None:
+    for j in range(8):
+        for i in range(8):
+            print('O' if pos[i] == j else 'X', end='')
+        print()
+    print()
+
+
+def set_queen(pos: list, flag_a: list, flag_b: list, flag_c: list, i: int) -> None:
+    for j in range(8):
+        if (
+            not flag_a[j]
+            and not flag_b[i + j]
+            and not flag_c[i - j + 7]
+        ):
+            pos[i] = j
+            if i == 7:
+                put(pos)
+            else:
+                flag_a[j] = flag_b[i + j] = flag_c[i - j + 7] = True
+                set_queen(pos, flag_a, flag_b, flag_c, i + 1)
+                flag_a[j] = flag_b[i + j] = flag_c[i - j + 7] = False
 
 
 def basic_recursion_test():
@@ -141,7 +167,16 @@ def hanoi_test():
     move(n, 1, 3)
 
 
+def eight_queen_test():
+    pos = [0] * 8  # Position of queen from each column
+    flag_a = [False] * 8  # Checking whether queen was placed from each row
+    flag_b = [False] * 15  # Checking whether queen was placed diagonal(/)
+    flag_c = [False] * 15  # Checking whether queen was placed diagonal(\)
+    set_queen(pos, flag_a, flag_b, flag_c, 0)
+
+
 if __name__ == '__main__':
-    # basic_recursion_test()
-    # basic_recursion_test2()
+    basic_recursion_test()
+    basic_recursion_test2()
     hanoi_test()
+    eight_queen_test()
