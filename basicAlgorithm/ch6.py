@@ -17,6 +17,8 @@
     7> Shell sort: Advanced straight insertion sort
         => Sorting by group and merge after completion
         => Advanced straight insertion sorting method to reduce cost of switching
+        => Each dividing number should not be multiple number of each other
+           (Elements of group should be mixed up properly even grouping, so to gain effect of sorting)
 """
 from typing import MutableSequence
 from random import sample
