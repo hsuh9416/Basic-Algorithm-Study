@@ -19,10 +19,38 @@
         => Advanced straight insertion sorting method to reduce cost of switching
         => Each dividing number should not be multiple number of each other
            (Elements of group should be mixed up properly even grouping, so to gain effect of sorting)
+    8> Quick sort: The generally used prompt sorting method
+        => Enable to implement recursive algorithm because quick sort is divide-and-conquer algorithm
+        => a> Use a pivot element to divide two group
+           b> Scan from each ends to pivot element to find out:
+                From left: Search elements bigger than pivot element
+                From right: Search elements smaller than pivot element
+           c> Switch the two correspondent elements that found from the scan from b>
+           d> End b> ~ c> when scanning ends reached to pivot element
+           e> Repeat a> ~ d> until no range to be divided
+        => Stack size for quick sort: log n
+        => Executing quick sort when using stack:
+           * Because it will be faster enough to empty stack, execute the smaller range first
+            (In order to avoid simultaneously stacking too much)
+        => Pivot element selection: Critical for quick sorting efficiency
+           * In general, the median value will be ideal but hard to find before sorting
+           * Method 1: if len(array) >= 3, then randomly choose 3 element and pick the median among them
+           * Method 2: a> Sort array[0], array[(len(array) -1) // 2], array[len(array) -1]
+                       b> Switch the median element with array[len(array)-2]
+                       c> Choose pivot element as array[len(array)-2]
+                       d> Set pl = left + 1, pr = right - 2 (Excludes already sorted 3 elements)
+        => Complexity of quick sort = O(n log n) ~ O(n^2) [Worst]
+        => If number of elements is not big enough, quick sort algorithm has low efficiency
+    9> Built-in function 'sorted()'
+        => Not in-placing array directly but returning new list of sorted elements
+        => Therefore, this function also capable to immutable sequences ex> tuple
+
+
 """
 from typing import MutableSequence
 from random import sample
 from bisect import insort
+from ch4 import Stack
 
 
 def bubble_sort(a: MutableSequence) -> None:
@@ -197,6 +225,58 @@ def shell_sort(a: MutableSequence) -> None:
         h //= 3
 
 
+def qsort_recursive(a: MutableSequence, left: int, right: int) -> None:
+    n = len(a)
+    pl = left
+    pr = right
+    x = a[(left + right) // 2]
+
+    while pl <= pr:
+        while a[pl] < x:
+            pl += 1
+        while a[pr] > x:
+            pr -= 1
+        if pl <= pr:
+            a[pl], a[pr] = a[pr], a[pl]
+            pl += 1
+            pr -= 1
+
+    if left < pr:  # Re-divide and re-conquer
+        qsort_recursive(a, left, pr)
+    if pl < right:  # Re-divide and re-conquer
+        qsort_recursive(a, pl, right)
+
+
+def qsort_non_recursive(a: MutableSequence, left: int, right: int) -> None:
+    range_s = Stack(right - left + 1)
+
+    range_s.push((left, right))
+
+    while not range_s.is_empty():  # Until ranges to divide exist
+        pl, pr = left, right = range_s.pop()
+        x = a[(left + right) // 2]
+
+        while pl <= pr:
+            while a[pl] < x:
+                pl += 1
+            while a[pr] > x:
+                pr -= 1
+            if pl <= pr:
+                a[pl], a[pr] = a[pr], a[pl]
+                pl += 1
+                pr -= 1
+
+        if left < pr:
+            range_s.push((left, pr))
+        if pl < right:
+            range_s.push((pl, right))
+
+
+def quick_sort(a: MutableSequence):
+    # qsort_recursive(a, 0, len(a) - 1)
+    qsort_non_recursive(a, 0, len(a) - 1)
+
+
 def sort_test():
     print('Start bubble sorting')
     n = None
@@ -219,7 +299,8 @@ def sort_test():
     # insertion_sort(x)
     # binary_insertion_sort(x)
     # binary_insertion_sort2(x)
-    shell_sort(x)
+    # shell_sort(x)
+    quick_sort(x)
     print('Array sorted: ', x)
 
 
