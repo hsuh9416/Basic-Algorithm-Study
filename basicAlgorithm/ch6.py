@@ -14,6 +14,9 @@
         => a> Find min element b> Switch with element in intended position of min element c> Repeat
     6> Straight insertion sort
         => a> Compare selected element with pre-ordered elements b> Insert the element into right position c> Repeat
+    7> Shell sort: Advanced straight insertion sort
+        => Sorting by group and merge after completion
+        => Advanced straight insertion sorting method to reduce cost of switching
 """
 from typing import MutableSequence
 from random import sample
@@ -174,6 +177,24 @@ def binary_insertion_sort2(a: MutableSequence) -> None:
         insort(a, a.pop(i), 0, i)
 
 
+def shell_sort(a: MutableSequence) -> None:
+    n = len(a)
+    h = 1
+
+    while h < n // 9:
+        h = h * 3 + 1
+
+    while h > 0:
+        for i in range(h, n):
+            j = i - h
+            tmp = a[i]
+            while j >= 0 and a[j] > tmp:
+                a[j + h] = a[j]
+                j -= h
+                a[j + h] = tmp
+        h //= 3
+
+
 def sort_test():
     print('Start bubble sorting')
     n = None
@@ -195,7 +216,8 @@ def sort_test():
     # selection_sort(x)
     # insertion_sort(x)
     # binary_insertion_sort(x)
-    binary_insertion_sort2(x)
+    # binary_insertion_sort2(x)
+    shell_sort(x)
     print('Array sorted: ', x)
 
 
