@@ -11,10 +11,13 @@
         => pass: The process of exchanging neighbored elements by comparison
     4) Shaker sort: Advanced bubble sort, Bidirectional bubble sort, Cocktail sort, Cocktail shaker sort
     5) Straight selection sort
-        => a) Find min element b) Switch with element in intended position of min element x) Repeat 
+        => a> Find min element b> Switch with element in intended position of min element c> Repeat
+    6> Straight insertion sort
+        => a> Compare selected element with pre-ordered elements b> Insert the element into right position c> Repeat
 """
 from typing import MutableSequence
 from random import sample
+from bisect import insort
 
 
 def bubble_sort(a: MutableSequence) -> None:
@@ -129,6 +132,48 @@ def selection_sort(a: MutableSequence) -> None:
         a[i], a[min_idx] = a[min_idx], a[i]
 
 
+def insertion_sort(a: MutableSequence) -> None:
+    n = len(a)
+    for i in range(1, n):
+        j = i
+        tmp = a[i]
+        while j > 0 and a[j - 1] > tmp:
+            a[j] = a[j - 1]  # Moving forward
+            j -= 1
+        a[j] = tmp  # Placing on the target position
+
+
+def binary_insertion_sort(a: MutableSequence) -> None:
+    n = len(a)
+    for i in range(1, n):
+        key = a[i]
+        pl = 0  # Starting index
+        pr = i - 1  # Ending index
+
+        while True:
+            pc = (pl + pr) // 2  # Middle index from the search range
+
+            if a[pc] == key:  # Stop searching
+                break
+            elif a[pc] < key:  # Only to search from backward side
+                pl = pc + 1
+            else:  # Only to search from forward side
+                pr = pc - 1
+            if pl > pr:  # Search end
+                break
+
+        pd = pc + 1 if pl <= pr else pr + 1
+
+        for j in range(i, pd, -1):
+            a[j] = a[j - 1]  # Changing forwardly
+        a[pd] = key  # Placing at the target position
+
+
+def binary_insertion_sort2(a: MutableSequence) -> None:
+    for i in range(1, len(a)):
+        insort(a, a.pop(i), 0, i)
+
+
 def sort_test():
     print('Start bubble sorting')
     n = None
@@ -147,7 +192,10 @@ def sort_test():
     # bubble_sort(x)
     # bubble_sort_adv(x)
     # shaker_sort(x)
-    selection_sort(x)
+    # selection_sort(x)
+    # insertion_sort(x)
+    # binary_insertion_sort(x)
+    binary_insertion_sort2(x)
     print('Array sorted: ', x)
 
 
