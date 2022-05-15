@@ -44,8 +44,10 @@
     9> Built-in function 'sorted()'
         => Not in-placing array directly but returning new list of sorted elements
         => Therefore, this function also capable to immutable sequences ex> tuple
-
-
+    10> Merge sort: Divide two parts from array then merge after each part been sorted
+        => Enable to implement recursive algorithm because quick sort is divide-and-conquer algorithm
+        => Linearly compares one-to-one from each group then merge
+        => From library heapq, merge() function can be used for this algorithm
 """
 from typing import MutableSequence
 from random import sample
@@ -277,6 +279,43 @@ def quick_sort(a: MutableSequence):
     qsort_non_recursive(a, 0, len(a) - 1)
 
 
+def merge_sort(a: MutableSequence) -> None:
+
+    def _merge_sort(a: MutableSequence, left: int, right: int) -> None:  # Internal function
+        if left < right:
+            center = (left + right) // 2
+
+            _merge_sort(a, left, center)  # Merge sort forward
+            _merge_sort(a, center + 1, right)  # Merge sort backward
+
+            p = j = 0
+            i = k = left
+
+            while i <= center:  # Elements of temporary array A assigned
+                buff[p] = a[i]
+                p += 1
+                i += 1
+
+            while i <= right and j < p:
+                if buff[j] <= a[i]:  # If element of A is smaller than those of B
+                    a[k] = buff[j]
+                    j += 1
+                else:  # If element of B is smaller than those of A
+                    a[k] = a[i]
+                    i += 1
+                k += 1
+
+            while j < p:  # Remained from A should be copied to the target array
+                a[k] = buff[j]
+                k += 1
+                j += 1
+
+    n = len(a)
+    buff = [None]*n
+    _merge_sort(a, 0, n - 1)
+    del buff
+
+
 def sort_test():
     print('Start bubble sorting')
     n = None
@@ -300,7 +339,8 @@ def sort_test():
     # binary_insertion_sort(x)
     # binary_insertion_sort2(x)
     # shell_sort(x)
-    quick_sort(x)
+    # quick_sort(x)
+    merge_sort(x)
     print('Array sorted: ', x)
 
 
