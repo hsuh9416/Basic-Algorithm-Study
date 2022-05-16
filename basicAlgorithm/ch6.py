@@ -48,11 +48,23 @@
         => Enable to implement recursive algorithm because quick sort is divide-and-conquer algorithm
         => Linearly compares one-to-one from each group then merge
         => From library heapq, merge() function can be used for this algorithm
+    11> Heap sort: Algorithm using heap(specialized tree-based data structure)
+        => Enable to implement recursive algorithm because quick sort is divide-and-conquer algorithm
+        => Heap is complete binary tree structure satisfies heap property: Val(parent node) >= Val(child node)
+        => Therefore, value of root node is the max value of the tree
+        => Generally, sibling nodes of heap doesn't have their ordered, so as to be called 'partial ordered tree'
+        => Index of nodes based of a[i]
+           a> parent node: a[(i - 1) // 2]
+           b> left child node: a[2*i + 1]
+           c> right child node: a[2*i +2]
+        => Heap sort is advanced type of sort derived from straight selection sort
+        => Time complexity of heap sort: O(n log n) * Because this is sort of binary searching algorithm
 """
 from typing import MutableSequence
 from random import sample
 from bisect import insort
 from ch4 import Stack
+import heapq
 
 
 def bubble_sort(a: MutableSequence) -> None:
@@ -316,6 +328,40 @@ def merge_sort(a: MutableSequence) -> None:
     del buff
 
 
+def heap_sort(a: MutableSequence) -> None:
+
+    def down_heap(a: MutableSequence, left: int, right: int) -> None:
+        temp = a[left]  # Value of root node
+
+        parent = left  # Index of root node
+        while parent < (right + 1) // 2:  # Until reach to the end
+            cl = parent * 2 + 1  # Index of left child node
+            cr = cl + 1  # Index of right child node
+            child = cr if cr <= right and a[cr] > a[cl] else cl  # Peak the max value
+            if temp >= a[child]:
+                break
+            a[parent] = a[child]  # Switch with child value
+            parent = child  # Go to the node below
+        a[parent] = temp  # Set original value to leaf(if reached the end) or to mid-node(if caught break during loop)
+
+    n = len(a)
+
+    for i in range((n - 1) // 2, -1, -1):  # Bottom-up approach: Sorting subtrees
+        down_heap(a, i, n - 1)
+
+    for i in range(n - 1, 0, -1):  # Bottom-up approach: Sorting entire tree
+        a[0], a[i] = a[i], a[0]
+        down_heap(a, 0, i - 1)
+
+
+def heap_sort_lib(a: MutableSequence) -> None:
+    heap = []
+    for i in a:
+        heapq.heappush(heap, i)
+    for i in range(len(a)):
+        a[i] = heapq.heappop(heap)
+
+
 def sort_test():
     print('Start bubble sorting')
     n = None
@@ -340,7 +386,9 @@ def sort_test():
     # binary_insertion_sort2(x)
     # shell_sort(x)
     # quick_sort(x)
-    merge_sort(x)
+    # merge_sort(x)
+    # heap_sort(x)
+    heap_sort_lib(x)
     print('Array sorted: ', x)
 
 
