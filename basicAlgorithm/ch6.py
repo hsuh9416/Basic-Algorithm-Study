@@ -59,6 +59,14 @@
            c> right child node: a[2*i +2]
         => Heap sort is advanced type of sort derived from straight selection sort
         => Time complexity of heap sort: O(n log n) * Because this is sort of binary searching algorithm
+    12> Counting sort: Sorting algorithm not using comparison of elements
+        => Also called as 'distribution counting sort'
+        => a> Make distribution table ex> 5 of number n to f[n] += 5
+           b> Make cumulative distribution table ex> f[n] = sum(f[i] for f[i] in range(0,n+1))
+           c> Complete sorting by comparing the tables from a> and b>
+           d> Copy the result to the intended sequence
+        => Only capable when min and max were known
+        => Have possibility to mix up index order of elements having same values
 """
 from typing import MutableSequence
 from random import sample
@@ -362,6 +370,26 @@ def heap_sort_lib(a: MutableSequence) -> None:
         a[i] = heapq.heappop(heap)
 
 
+def counting_sort(a: MutableSequence) -> None:
+
+    def _counting_sort(a: MutableSequence, max_num: int):
+        n = len(a)
+        f = [0] * (max_num + 1)
+        b = [0] * n
+
+        for i in range(n):
+            f[a[i]] += 1
+        for i in range(1, max_num + 1):
+            f[i] += f[i - 1]
+        for i in range(n - 1, -1, -1):
+            f[a[i]] -= 1
+            b[f[a[i]]] = a[i]
+        for i in range(n):
+            a[i] = b[i]
+
+    _counting_sort(a, max(a))
+
+
 def sort_test():
     print('Start bubble sorting')
     n = None
@@ -388,7 +416,8 @@ def sort_test():
     # quick_sort(x)
     # merge_sort(x)
     # heap_sort(x)
-    heap_sort_lib(x)
+    # heap_sort_lib(x)
+    counting_sort(x)
     print('Array sorted: ', x)
 
 
