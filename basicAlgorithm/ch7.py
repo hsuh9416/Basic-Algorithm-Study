@@ -15,7 +15,17 @@
            b> From a>, set the logic to the point to start over
            c> Execute search
         => KMP is a kind of adjustment of brute search method, so it is basically a linear searching method.
-        => However, this algorithm is generally inferior to the Boyer-Moore method(So seldomly be used)
+        => However, this algorithm is generally inferior to the Boyer-Moor method(So seldom be used)
+    4) Boyer-Moor method: The methods scans the text by pattern reversely to make much effective skipping
+        => Known as much superior algorithm than KPM method
+        => Enable to skip length of pattern
+        => Skip table logic
+           a> If the letter was not included in pattern
+            => The skipping length == len(pattern)
+           b> If the letter was included in pattern
+            - If the latest index was k then -> the skipping length == len(pattern) - k - 1
+            - If no latter was overlapped within pattern then -> the skipping length == len(n)
+           c> The number of elements used in skip table is 256
 """
 
 
@@ -87,13 +97,38 @@ def kmp_match(txt: str, pat: str) -> int:
     return pt - pp if pp == len(pat) else -1
 
 
+def bm_match(txt: str, pat: str) -> int:
+    skip = [None] * 256  # Skip table
+
+    # Skip table
+    for pt in range(256):  # Allocate number to skip as a length of pattern in all elements
+        skip[pt] = len(pat)
+
+    for pt in range(len(pat)):  # Relocate number to skip for which overlapped element(ASCII number of character)
+        skip[ord(pat[pt])] = len(pat) - pt - 1
+
+    # String searching
+    while pt < len(txt):  # Checking within reversed pattern
+        pp = len(pat) - 1  # Add up the index as [len(pattern) - 1]
+        while txt[pt] == pat[pp]:
+            if pp == 0:  # All the letter has been matched
+                return pt
+            pt -= 1
+            pp -= 1
+        # After pattern matching been failed
+        pt += skip[ord(txt[pt])] if skip[ord(txt[pt])] > len(pat) - pp else len(pat) - pp
+
+    return -1
+
+
 def string_searching_text():
     s1 = input('Enter the whole text to be searched: ')
     s2 = input('Enter the pattern string to use in searching: ')
 
     # idx = bf_match(s1, s2)
     # idx = bf_match2(s1, s2)
-    idx = kmp_match(s1, s2)
+    # idx = kmp_match(s1, s2)
+    idx = bm_match(s1, s2)
 
     if idx == -1:
         print("There's no matching pattern in the text!")
