@@ -26,6 +26,12 @@
             - If the latest index was k then -> the skipping length == len(pattern) - k - 1
             - If no latter was overlapped within pattern then -> the skipping length == len(n)
            c> The number of elements used in skip table is 256
+    5> Time complexity of string searching algorithm
+        * n: length of text m: length of pattern
+        a> Brute force method: Theoretically O(mn) but actually O(n)
+        b> KMP(Knuth-Morris-Pratt): O(n)
+            => Good for file reading sequentially
+        c> Boyer-Moor method: The worst case: O(n) In average: O(n / m)
 """
 
 
