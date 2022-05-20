@@ -11,7 +11,10 @@
            Predecessor node: The previous node
            Successor node: The next node
         => 'List' type of Python is not a data type of list: Actually it is 'Array'
-
+    2) Linked List with cursor
+        => Cursor: A pointer represented by an integer index; Index of the next node
+        => Cursor indicates that the back node is in the position of which presented by its index number
+        => If number of data is predictable and stable, then can use cursor to avoid cost of frequent memory changing
 """
 from __future__ import annotations
 from typing import Any
@@ -33,6 +36,15 @@ class Node:
         """ Initialize """
         self.data = data  # Data
         self.successor = successor  # Successor node
+
+
+class NodeCursor:
+
+    def __init__(self, data=None, successor=None, d_next=None):
+        """ Initialize """
+        self.data = data  # Data
+        self.successor = successor  # Cursor index of the list
+        self.d_next = d_next  # Cursor index of free list
 
 
 class LinkedList:
@@ -142,6 +154,25 @@ class LinkedList:
         return LinkedListInterator(self.head)
 
 
+class LinkedListCursor:
+
+    def __init__(self, capacity: int):
+        """ Initialize """
+        self.head = None  # Head node
+        self.current = None  # Current node
+        self.max = None  # Current tail recode
+        self.deleted = None  # Head node of free list
+        self.capacity = capacity  # Size of the list
+        self.n = [Node()] * self.capacity  # List itself
+        self.no = 0
+
+    def __len__(self) -> int:
+        return self.no
+
+    def get_insert_index(self):
+        pass
+
+
 class LinkedListInterator:
 
     def __init__(self, head: Node):
@@ -205,7 +236,7 @@ def run_menu(lst: LinkedList) -> None:
             for e in lst:
                 print(e)
 
-        else: # End the menu
+        else:  # End the menu
             break
 
 
