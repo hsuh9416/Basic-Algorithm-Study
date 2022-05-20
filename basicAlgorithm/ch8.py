@@ -124,7 +124,7 @@ class LinkedList:
     def print(self) -> None:
         ptr = self.head
 
-        while ptr is None:
+        while ptr is not None:
             print(ptr.data)
             ptr = ptr.next
 
