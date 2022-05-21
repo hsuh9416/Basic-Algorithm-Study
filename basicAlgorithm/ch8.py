@@ -29,6 +29,8 @@ LinkedList_Menu = Enum('LinkedList_Menu',
                         ]
                        )
 
+Null = -1
+
 
 class Node:
 
@@ -40,7 +42,7 @@ class Node:
 
 class NodeCursor:
 
-    def __init__(self, data=None, successor=None, d_next=None):
+    def __init__(self, data=Null, successor=Null, d_next=Null):
         """ Initialize """
         self.data = data  # Data
         self.successor = successor  # Cursor index of the list
@@ -158,19 +160,146 @@ class LinkedListCursor:
 
     def __init__(self, capacity: int):
         """ Initialize """
-        self.head = None  # Head node
-        self.current = None  # Current node
-        self.max = None  # Current tail recode
-        self.deleted = None  # Head node of free list
+        self.head = Null  # Head node index
+        self.current = Null  # Current node index
+        self.max = Null  # The last record used; Current tail node index
+        self.deleted = Null  # Head node index of free list
         self.capacity = capacity  # Size of the list
-        self.n = [Node()] * self.capacity  # List itself
+        self.n = [NodeCursor()] * self.capacity  # List itself
         self.no = 0
 
     def __len__(self) -> int:
         return self.no
 
     def get_insert_index(self):
-        pass
+        if self.deleted == Null:  # No deleted record exists
+            if self.max + 1 < self.capacity:
+                self.max += 1
+                return self.max  # Use new record to write
+            else:
+                return Null
+        else:
+            rec = self.deleted  # Get first deleted node index
+            self.deleted = self.n[rec].d_next  # Presetting next deleted head node index
+            return rec  # Use free index first(rather than issuing new index number)
+
+    def delete_index(self, idx: int):
+        if self.deleted == Null:  # First deletion
+            self.deleted = idx  # Insert deleted index to the head of free list
+            self.n[idx].d_next = Null  # No other deleted index exists so set as 'None'
+        else:
+            rec = self.deleted
+            self.deleted = idx  # Insert deleted index to the head of free list
+            self.n[idx].d_next = rec  # Set original deleted index as next node index
+
+    def search(self, data: Any) -> int:
+        cnt = 0
+        ptr = self.head
+        while ptr != Null:
+            if self.n[ptr].data == data:
+                self.current = ptr
+                return cnt
+            cnt += 1
+            ptr = self.n[ptr].d_next
+        return Null
+
+    def __contains__(self, data: Any) -> bool:
+        return self.search(data) >= 0
+
+    def add_first(self, data: Any):
+        ptr = self.head
+        rec = self.get_insert_index()
+        if rec != Null:
+            self.head = self.current = rec
+            self.n[self.head] = Node(data, ptr)
+            self.no += 1
+
+    def add_last(self, data: Any):
+        if self.head == Null:
+            self.add_first(data)
+        else:
+            ptr = self.head
+            while ptr is not None and self.n[ptr].successor != Null:  # Proceed until the end
+                ptr = self.n[ptr].successor
+            rec = self.get_insert_index()
+            if ptr is not None and rec != Null:
+                self.n[ptr].successor = self.current = rec
+                self.n[rec] = Node(data)  # Add node to last
+                self.no += 1
+
+    def remove_first(self):
+        if self.head != Null:
+            ptr = self.n[self.head].successor
+            self.delete_index(self.head)
+            self.head = self.current = ptr
+            self.no -= 1
+
+    def remove_last(self):
+        if self.head != Null:
+            if self.n[self.head].successor == Null:
+                self.remove_first()
+            else:
+                ptr = self.head
+                pre = self.head
+
+                while ptr is not None and self.n[ptr].successor != Null:  # Proceed until the end
+                    pre = ptr
+                    ptr = self.n[ptr].successor
+                self.n[pre].successor = Null  # Set the second last node to the last node
+                self.delete_index(ptr)
+                self.current = pre
+                self.no -= 1
+
+    def remove(self, p: int):  # Remove intended node
+        if self.head != Null:
+            if p == self.head:
+                self.remove_first()
+            else:
+                ptr = self.head
+
+                while ptr is not None and self.n[ptr].successor != p:  # Stop loop when self.n[ptr].successor == p
+                    ptr = self.n[ptr].successor
+                    if ptr == Null:
+                        return  # ptr was not exist
+                self.n[ptr].successor = Null
+                self.delete_index(p)
+                self.n[ptr].successor = self.n[p].successor
+                self.current = ptr
+                self.no -= 1
+
+    def remove_current_node(self):
+        self.remove(self.current)
+
+    def clear(self):
+        while self.head != Null:  # Proceed removing one by one
+            self.remove_first()
+        self.current = Null
+
+    def next(self) -> bool:
+        if self.current == Null or self.n[self.current].successor == Null:
+            return False
+        self.current = self.n[self.current].successor
+        return True
+
+    def print_current_node(self):
+        if self.current == Null:
+            print('No current node exists!')
+        else:
+            print(self.n[self.current].data)
+
+    def print(self):
+        ptr = self.head
+
+        while ptr is not None and ptr != Null:
+            print(self.n[ptr].data)
+            ptr = self.n[ptr].successor
+
+    def dump(self):
+        for i in self.n:
+            print(f'[{i}] {i.data} {i.successor} {i.d_next}')
+
+    def __iter__(self) -> ArrayLinkedListInterator:
+        return ArrayLinkedListInterator(self.n, self.head)
 
 
 class LinkedListInterator:
@@ -190,7 +319,25 @@ class LinkedListInterator:
             return data
 
 
-def run_menu(lst: LinkedList) -> None:
+class ArrayLinkedListInterator:
+
+    def __init__(self, n: list[NodeCursor], head: int):
+        self.n = n
+        self.current = head
+
+    def __iter__(self) -> ArrayLinkedListInterator:
+        return self
+
+    def __next__(self) -> Any:
+        if self.current is None:
+            raise StopIteration
+        else:
+            data = self.n[self.current].data
+            self.current = self.n[self.current].successor  # Presetting before future next() call
+            return data
+
+
+def run_menu(lst: Any) -> None:
     while True:
         menu = select_menu(LinkedList_Menu)
 
@@ -245,5 +392,11 @@ def linkedlist_test():
     run_menu(lst)
 
 
+def linkedlist_cursor_test():
+    lst = LinkedListCursor(100)
+    run_menu(lst)
+
+
 if __name__ == '__main__':
-    linkedlist_test()
+    # linkedlist_test()
+    linkedlist_cursor_test()
