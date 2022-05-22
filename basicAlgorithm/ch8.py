@@ -15,19 +15,45 @@
         => Cursor: A pointer represented by an integer index; Index of the next node
         => Cursor indicates that the back node is in the position of which presented by its index number
         => If number of data is predictable and stable, then can use cursor to avoid cost of frequent memory changing
-"""
+        => Free list: Data structure managing deleted records
+            - Store the index of deleted records and use it when additional insertion executed
+            - LAST-IN FIRST-OUT structure
+    3) Circular doubly linked list: Linked list connecting head and tail bidirectionally
+        => Also called as 'Bidirectional linked list'
+        => The pointer of tail node will be head node instead of 'None'
+        => To improve shortcoming of difficulty to search previous node
+        => Give node double pointer by which can reference bidirectionally
+        => If prev value and next value is 'None' than return 'self'
+            - If prev is None -> prev == self (reference itself)
+            - If next is None -> next == self (reference itself)
+    4) Substitution of Python has reversed order rather than other languages
+        ex> A.next = A.next.prev = value => A.next = value than node.prev = value
+            => Does not updates A.next.prev!
+        """
 from __future__ import annotations
 from typing import Any
 from enum import Enum
 from ch3 import select_menu
 
+
 LinkedList_Menu = Enum('LinkedList_Menu',
-                       ['INSERT_FIRST', 'INSERT_LAST', 'DELETE_HEAD',
-                        'DELETE_TAIL', 'PRINT_CURRENT', 'MOVE_NEXT',
-                        'DELETE_CURRENT', 'CLEAR_ALL', 'SEARCH', 'IS_PRESENT',
-                        'PRINT_ALL', 'SCAN', 'TERMINATE'
+                       [
+                           'INSERT_FIRST', 'INSERT_LAST', 'DELETE_HEAD',
+                           'DELETE_TAIL', 'PRINT_CURRENT', 'MOVE_NEXT',
+                           'DELETE_CURRENT', 'CLEAR_ALL', 'SEARCH', 'IS_PRESENT',
+                           'PRINT_ALL', 'SCAN', 'TERMINATE'
                         ]
                        )
+
+DoubleLinkedList_Menu = Enum('DoubleLinkedList_Menu',
+                             [
+                                'INSERT_FIRST', 'INSERT_LAST', 'ADD_AFTER_CURRENT',
+                                'DELETE_FIRST', 'DELETE_LAST', 'PRINT_CURRENT',
+                                'MOVE_NEXT', 'MOVE_PREV', 'DELETE_CURRENT',
+                                'CLEAR_ALL', 'SEARCH', 'IS_PRESENT', 'PRINT_ALL',
+                                'PRINT_ALL_REVERSE', 'SCAN', 'SCAN_REVERSE', 'TERMINATE'
+                             ]
+                             )
 
 Null = -1
 
@@ -47,6 +73,15 @@ class NodeCursor:
         self.data = data  # Data
         self.successor = successor  # Cursor index of the list
         self.d_next = d_next  # Cursor index of free list
+
+
+class NodeDouble:
+
+    def __init__(self, data: Any = None, prev: NodeDouble = None, successor: NodeDouble = None):
+        """ Initialize """
+        self.data = data  # Data
+        self.prev = prev or self  # Forward cursor index of the list
+        self.successor = successor or self  # Rearward cursor index of the list
 
 
 class LinkedList:
@@ -308,6 +343,118 @@ class LinkedListCursor(object):
         return ArrayLinkedListInterator(self.n, self.head)
 
 
+class DoubleLinkedList:
+
+    def __init__(self):
+        self.head = self.current = NodeDouble()  # Create dummy node as head node
+        self.no = 0
+
+    def __len__(self) -> int:
+        return self.no
+
+    def is_empty(self) -> bool:
+        return self.head.successor is self.head  # When have referenced dummy node/head node
+
+    def search(self, data: Any) -> Any:
+        cnt = 0
+        ptr = self.head.successor
+        while ptr is not self.head:
+            if data == ptr.data:
+                self.current = ptr
+                return cnt
+            cnt += 1
+            ptr = ptr.successor
+        return -1
+
+    def __contains__(self, data: Any) -> bool:
+        return self.search(data) >= 0
+
+    def print_current_node(self):
+        if self.is_empty():
+            print("No current node exists!")
+        else:
+            print(self.current.data)
+
+    def print(self):
+        ptr = self.head.successor
+
+        while ptr is not self.head:
+            print(ptr.data)
+            ptr = ptr.successor
+
+    def print_reverse(self):
+        ptr = self.head.prev
+        while ptr is not self.head:
+            print(ptr.data)
+            ptr = ptr.prev
+
+    def next(self) -> bool:
+        if self.is_empty() or self.current.successor is self.head:
+            return False
+        self.current = self.current.successor
+        return True
+
+    def prev(self) -> bool:
+        if self.is_empty() or self.current.prev is self.head:
+            return False
+        self.current = self.current.prev
+        return True
+
+    def add(self, data: Any):
+        node = NodeDouble(data, self.current, self.current.successor)
+        self.current.successor.prev = node  # Add reference of previous node of next node as new node
+        self.current.successor = node  # Add reference of next node of current node as new node
+        self.current = node  # New focused node as new node
+
+        self.no += 1
+
+    def add_first(self, data: Any):
+        self.current = self.head  # Focus to dummy node
+        self.add(data)  # Add as next node of dummy node
+
+    def add_last(self, data: Any):
+        self.current = self.head.prev  # Focus on last node
+        self.add(data)  # Add new node
+
+    def remove_current_node(self):
+        if not self.is_empty():
+            self.current.prev.successor = self.current.successor  # Skip current node
+            self.current.successor.prev = self.current.prev  # Scip current node
+            self.current = self.current.prev  # Set focus to previous node
+            self.no -= 1
+            if self.current is self.head:  # If now focusing on dummy node or list was empty
+                self.current = self.head.successor  # Set focus to the successor or set None
+
+    def remove(self, p: NodeDouble):
+        ptr = self.head.successor
+
+        while ptr is not self.head:
+            if ptr is p:
+                self.current = p
+                self.remove_current_node()
+                break
+            ptr = ptr.successor
+
+    def remove_first(self):
+        self.current = self.head.successor  # Set Original head node to next node then store
+        self.remove_current_node()
+
+    def remove_last(self):
+        self.current = self.head.prev  # Set Original head node to next node then store
+        self.remove_current_node()
+
+    def clear(self):
+        while not self.is_empty():
+            self.remove_first()
+        self.no = 0
+
+    def __iter__(self) -> DoubleLinkedListIterator:
+        return DoubleLinkedListIterator(self.head)
+
+    def __reversed__(self) -> DoubleLinkedListReverseIterator:
+        return DoubleLinkedListReverseIterator(self.head)
+
+
 class LinkedListInterator:
 
     def __init__(self, head: Node):
@@ -340,6 +487,42 @@ class ArrayLinkedListInterator:
         else:
             data = self.n[self.current].data
             self.current = self.n[self.current].successor  # Presetting before future next() call
+            return data
+
+
+class DoubleLinkedListIterator:
+
+    def __init__(self, head: NodeDouble):
+        self.head = head
+        self.current = head.successor
+
+    def __iter__(self) -> DoubleLinkedListIterator:
+        return self
+
+    def __next__(self) -> Any:
+        if self.current is self.head:
+            raise StopIteration
+        else:
+            data = self.current.data
+            self.current = self.current.successor
+            return data
+
+
+class DoubleLinkedListReverseIterator:
+
+    def __init__(self, head: NodeDouble):
+        self.head = head
+        self.current = head.prev
+
+    def __iter__(self) -> DoubleLinkedListReverseIterator:
+        return self
+
+    def __next__(self) -> Any:
+        if self.current is self.head:
+            raise StopIteration
+        else:
+            data = self.current.data
+            self.current = self.current.prev
             return data
 
 
@@ -393,6 +576,69 @@ def run_menu(lst: Any) -> None:
             break
 
 
+def run_menu2(lst: DoubleLinkedList):
+    while True:
+        menu = select_menu(DoubleLinkedList_Menu)
+
+        if menu == DoubleLinkedList_Menu.INSERT_FIRST:  # Add as the next node of head node
+            lst.add_first(input('Enter the value to add at first node: '))
+
+        elif menu == DoubleLinkedList_Menu.INSERT_LAST:  # Add as the previous node of head node
+            lst.add_last(input('Enter the value to add at last node: '))
+
+        elif menu == DoubleLinkedList_Menu.ADD_AFTER_CURRENT:  # Add as the previous node of head node
+            lst.add(input('Enter the value to next of current node: '))
+
+        elif menu == DoubleLinkedList_Menu.DELETE_FIRST:  # Remove current head node
+            lst.remove_first()
+
+        elif menu == DoubleLinkedList_Menu.DELETE_LAST:  # Remove current tail node
+            lst.remove_last()
+
+        elif menu == DoubleLinkedList_Menu.PRINT_CURRENT:  # Print current node
+            lst.print_current_node()
+
+        elif menu == DoubleLinkedList_Menu.MOVE_NEXT:  # Move to the next node
+            lst.next()
+
+        elif menu == DoubleLinkedList_Menu.MOVE_PREV:  # Move to the previous node
+            lst.prev()
+
+        elif menu == DoubleLinkedList_Menu.DELETE_CURRENT:  # Remove current node
+            lst.remove_current_node()
+
+        elif menu == DoubleLinkedList_Menu.CLEAR_ALL:  # Remove all node
+            lst.clear()
+
+        elif menu == DoubleLinkedList_Menu.SEARCH:  # Search the intended value
+            pos = lst.search(input('Enter the value to search: '))
+            if pos >= 0:
+                print(f'The index of the data: {pos}')
+            else:
+                print('The data is not exists!')
+
+        elif menu == DoubleLinkedList_Menu.IS_PRESENT:  # Check the value is present
+            answer = input('Enter the value to check if present: ')
+            print(f'Result: {"Exists" if answer in lst else "Not Exists"}')
+
+        elif menu == DoubleLinkedList_Menu.PRINT_ALL:  # Show all values in the list
+            lst.print()
+
+        elif menu == DoubleLinkedList_Menu.PRINT_ALL_REVERSE:  # Show all values in the list reversely
+            lst.print_reverse()
+
+        elif menu == DoubleLinkedList_Menu.SCAN:  # Show the data one by one
+            for e in lst:
+                print(e)
+
+        elif menu == DoubleLinkedList_Menu.SCAN_REVERSE:  # Show the data one by one reversely
+            for e in reversed(lst):
+                print(e)
+
+        else:  # End the menu
+            break
+
+
 def linkedlist_test():
     lst = LinkedList()
     run_menu(lst)
@@ -403,6 +649,12 @@ def linkedlist_cursor_test():
     run_menu(lst)
 
 
+def doublelinkedlist_test():
+    lst = DoubleLinkedList()
+    run_menu2(lst)
+
+
 if __name__ == '__main__':
-    linkedlist_test()
-    linkedlist_cursor_test()
+    # linkedlist_test()
+    # linkedlist_cursor_test()
+    doublelinkedlist_test()
