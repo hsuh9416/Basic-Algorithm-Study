@@ -3,7 +3,25 @@
     * Skipped too simple examples
 
     * important notes
-    1) To be continued
+    1) Main concepts of tree data structure
+        a> root: The head node of tree data structure; Only one exists in tree data structure
+        b> leaf: The bottom nodes of tree data structure; Terminal node or External node; Can exist multiple
+        c> non-terminal node: The nodes which are not root and leaf; Internal node
+        d> child: The direct-descendant node of base node; Each node can have multiple child nodes
+        e> parent: The direct-ascendant node of base node; Each node can have only one parent node
+        f> sibling: The nodes which having the same parent node with base node
+        g> ancestor: All ascendant nodes of base node
+        h> descendant: All descendant nodes of base node
+        i> level: Representing how many steps to reach to root node
+            ex> level or root: 0, level of child of root: 1, etc.
+        j> degree: The number of each node's children
+        k> height: The max level of tree data structure; The level representing from the leaf to the root
+        l> subtree: Having a particular internal node as head node, forming tree structure of itself
+        m> None tree: The tree structure has no node; null tree
+        n> order tree: Tree structure having order among sibling nodes cf. unordered tree
+    2) Methods to scan tree data structure
+        a> breadth-first search:
+
 
 """
 
