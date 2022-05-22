@@ -156,7 +156,8 @@ class LinkedList:
         return LinkedListInterator(self.head)
 
 
-class LinkedListCursor:
+class LinkedListCursor(object):
+    _instance = None
 
     def __init__(self, capacity: int):
         """ Initialize """
@@ -167,6 +168,11 @@ class LinkedListCursor:
         self.capacity = capacity  # Size of the list
         self.n = [NodeCursor()] * self.capacity  # List itself
         self.no = 0
+
+    def __new__(cls, capacity: int):  # Singleton
+        if cls._instance is None:
+            cls._instance = super(LinkedListCursor, cls).__new__(cls)
+        return cls._instance
 
     def __len__(self) -> int:
         return self.no
@@ -200,7 +206,7 @@ class LinkedListCursor:
                 self.current = ptr
                 return cnt
             cnt += 1
-            ptr = self.n[ptr].d_next
+            ptr = self.n[ptr].successor
         return Null
 
     def __contains__(self, data: Any) -> bool:
@@ -211,7 +217,7 @@ class LinkedListCursor:
         rec = self.get_insert_index()
         if rec != Null:
             self.head = self.current = rec
-            self.n[self.head] = Node(data, ptr)
+            self.n[self.head] = NodeCursor(data, ptr)
             self.no += 1
 
     def add_last(self, data: Any):
@@ -219,12 +225,12 @@ class LinkedListCursor:
             self.add_first(data)
         else:
             ptr = self.head
-            while ptr is not None and self.n[ptr].successor != Null:  # Proceed until the end
+            while self.n[ptr].successor != Null:  # Proceed until the end
                 ptr = self.n[ptr].successor
             rec = self.get_insert_index()
-            if ptr is not None and rec != Null:
+            if rec != Null:
                 self.n[ptr].successor = self.current = rec
-                self.n[rec] = Node(data)  # Add node to last
+                self.n[rec] = NodeCursor(data)  # Add node to last
                 self.no += 1
 
     def remove_first(self):
@@ -242,7 +248,7 @@ class LinkedListCursor:
                 ptr = self.head
                 pre = self.head
 
-                while ptr is not None and self.n[ptr].successor != Null:  # Proceed until the end
+                while self.n[ptr].successor != Null:  # Proceed until the end
                     pre = ptr
                     ptr = self.n[ptr].successor
                 self.n[pre].successor = Null  # Set the second last node to the last node
@@ -257,7 +263,7 @@ class LinkedListCursor:
             else:
                 ptr = self.head
 
-                while ptr is not None and self.n[ptr].successor != p:  # Stop loop when self.n[ptr].successor == p
+                while self.n[ptr].successor != p:  # Stop loop when self.n[ptr].successor == p
                     ptr = self.n[ptr].successor
                     if ptr == Null:
                         return  # ptr was not exist
@@ -290,7 +296,7 @@ class LinkedListCursor:
     def print(self):
         ptr = self.head
 
-        while ptr is not None and ptr != Null:
+        while ptr != Null:
             print(self.n[ptr].data)
             ptr = self.n[ptr].successor
 
@@ -321,7 +327,7 @@ class LinkedListInterator:
 
 class ArrayLinkedListInterator:
 
-    def __init__(self, n: list[NodeCursor], head: int):
+    def __init__(self, n: Any, head: int):
         self.n = n
         self.current = head
 
@@ -329,7 +335,7 @@ class ArrayLinkedListInterator:
         return self
 
     def __next__(self) -> Any:
-        if self.current is None:
+        if self.current == Null:
             raise StopIteration
         else:
             data = self.n[self.current].data
@@ -398,5 +404,5 @@ def linkedlist_cursor_test():
 
 
 if __name__ == '__main__':
-    # linkedlist_test()
+    linkedlist_test()
     linkedlist_cursor_test()
