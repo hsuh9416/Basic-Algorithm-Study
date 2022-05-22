@@ -655,6 +655,6 @@ def doublelinkedlist_test():
 
 
 if __name__ == '__main__':
-    # linkedlist_test()
-    # linkedlist_cursor_test()
+    linkedlist_test()
+    linkedlist_cursor_test()
     doublelinkedlist_test()
