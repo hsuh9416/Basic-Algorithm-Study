@@ -32,9 +32,42 @@
                 - inorder: left child -> base node visit -> right child visit
                 - postorder: left child -> right child -> base node visit
             => Each node can be visited maximum 3 times(by each preorder, inorder, postorder)
-
+    3) Binary tree: Tree data structure that each node can have maximum two child nodes
+        => Distinguishes each child node as left child and right child
+        => left subtree: Subtree having left child as a root
+           right subtree: Subtree having right child as a root
+    4) Complete binary tree: Tree data structure that each node having maximum two child nodes
+        => Each node should have two child nodes except leaf nodes
+        => Maximum number of nodes: 2^(k+1) - 1
+        => Height of tree having n number of nodes: log n
+    5) Self-balancing search tree
+        => Tree data structure designed to limit the height as O(log n)
+        => When nodes were inserted in ascending order of key, the depth of tree structure would be deeper
+        => So this make tree structure acting like linear list getting lower efficiency when searching
+        => By using self-balancing search, enable to limit depth of tree structure
+        => Types of self-balancing search tree for binary structure: AVL tree, red-black tree
+        => Types of self-balancing search tree for non-binary structure: B tree, 2-3 tree
+    6) Properties of binary search tree
+        a> Conditions of node in binary search tree
+            - Key value of left subtree < Key value of base node
+            - Key value of right subtree > Key value of base node
+        b> Structure is simpler than other data structure
+        c> Enable to get the node values in ascending order by inorder search in depth-first search
+        d> Promptly processes searching similar as binary searching
+        e> Easy node insertion
 
 """
+from __future__ import annotations
+from typing import Any
+
+
+class Node:
+    def __init__(self, key: Any, value: Any, left: Node = None, right: Node = None):
+        self.key = key
+        self.value = value
+        self.left = left
+        self.right = right
+
 
 if __name__ == '__main__':
     print('To be continued')
