@@ -20,7 +20,18 @@
         m> None tree: The tree structure has no node; null tree
         n> order tree: Tree structure having order among sibling nodes cf. unordered tree
     2) Methods to scan tree data structure
-        a> breadth-first search:
+        a> breadth-first search
+            => Also called as horizontal search
+            => Scan the data horizontally first, then go down to the child node (until reach to the bottom)
+            => Horizontal scan will conducted from left to right
+        b> depth-first search:
+            => Also called as vertical search
+            => Scan from top to bottom first, then return to the parent node to find un-scanned node
+            => 3 type of detailed scanning included: preorder, inorder, postorder
+                - preorder: base node visit -> left child visit -> right child visit
+                - inorder: left child -> base node visit -> right child visit
+                - postorder: left child -> right child -> base node visit
+            => Each node can be visited maximum 3 times(by each preorder, inorder, postorder)
 
 
 """
