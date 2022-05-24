@@ -63,7 +63,7 @@ from enum import Enum
 from ch3 import select_menu
 
 
-Tree_Menu = Enum('Tree_Menu', ['INSERT', 'DELETE', 'SEARCH', 'SHOW', 'SHOW_REVERSE','KEY_RANGE', 'TERMINATE'])
+Tree_Menu = Enum('Tree_Menu', ['INSERT', 'DELETE', 'SEARCH', 'SHOW', 'SHOW_REVERSE', 'KEY_RANGE', 'TERMINATE'])
 
 
 class Node:
@@ -99,73 +99,76 @@ class BinarySearchTree:
             elif _key < node.key:  # No key assigned yet at left node
                 if node.left is None:
                     node.left = Node(_key, _value, None, None)
+                    return True  # Return True after data assigned
                 else:
                     add_node(node.left, _key, _value)  # Go down to find out empty node
 
-            else:  # No Key assigned yet at left node
+            else:  # No Key assigned yet at right node
                 if node.right is None:
                     node.right = Node(_key, _value, None, None)
+                    return True  # Return True after data assigned
                 else:
                     add_node(node.right, _key, _value)  # Go down to find out empty node
-            return True  # Return True after data assigned
+            return False  # Return False if nothing done
 
         if self.root is None:
             self.root = Node(key, value, None, None)
+            return True
         else:
             return add_node(self.root, key, value)
 
     def remove(self, key: Any) -> bool:
         p = self.root
+        parent = None
+        is_left_child = True
 
         while True:
             if p is None:
                 return False  # Nothing to remove
-            parent = None
-            is_left_child = True
 
             if key == p.key:
                 break
             else:
                 parent = p
-                if key < p.key:
+                if key < p.key:  # Point left subtree from the parent node
                     is_left_child = True
                     p = p.left
-                else:
+                else:  # Point right subtree from the parent node
                     is_left_child = False
                     p = p.right
 
-            if p.left is None:
-                if p is self.root:
-                    self.root = p.right
-                elif is_left_child:
-                    parent.left = p.right
-                else:
-                    parent.right = p.right
-
-            elif p.right is None:
-                if p is self.root:
-                    self.root = p.left
-                elif is_left_child:
-                    parent.left = p.left
-                else:
-                    parent.right = p.left
-
+        if p.left is None:  # No left child/No child
+            if p is self.root:
+                self.root = p.right  # Remove link of p by reconnecting as p's child/None
+            elif is_left_child:
+                parent.left = p.right  # Remove link of p by reconnecting as p's child/None
             else:
-                parent = p
-                left = p.left
-                is_left_child = True
-                while left.right is not None:
-                    parent = left
-                    left = left.right
-                    is_left_child = False
+                parent.right = p.right  # Remove link of p by reconnecting as p's child/None
 
-                p.key = left.key
-                p.value = left.value
-                if is_left_child:
-                    parent.left = left.left
-                else:
-                    parent.right = left.left
-            return True
+        elif p.right is None:  # No right child
+            if p is self.root:
+                self.root = p.left  # Remove link of p by reconnecting as p's child/None
+            elif is_left_child:
+                parent.left = p.left  # Remove link of p by reconnecting as p's child/None
+            else:
+                parent.right = p.left  # Remove link of p by reconnecting as p's child/None
+
+        else:  # Having two child
+            parent = p
+            left = p.left
+            is_left_child = True
+            while left.right is not None:  # Find the biggest child node from left subtree
+                parent = left
+                left = left.right
+                is_left_child = False
+
+            p.key = left.key
+            p.value = left.value
+            if is_left_child:
+                parent.left = left.left  # Delete
+            else:
+                parent.right = left.left  # Delete
+        return True
 
     def dump(self, reverse=False) -> None:
 
