@@ -59,6 +59,11 @@
 """
 from __future__ import annotations
 from typing import Any
+from enum import Enum
+from ch3 import select_menu
+
+
+Tree_Menu = Enum('Tree_Menu', ['INSERT', 'DELETE', 'SEARCH', 'SHOW', 'SHOW_REVERSE','KEY_RANGE', 'TERMINATE'])
 
 
 class Node:
@@ -89,20 +94,20 @@ class BinarySearchTree:
     def add(self, key: Any, value: Any) -> bool:
 
         def add_node(node: Node, _key: Any, _value: Any) -> bool:
-            if _key == node.key:
+            if _key == node.key:  # If key number already exists
                 return False
-            elif _key < node.key:
+            elif _key < node.key:  # No key assigned yet at left node
                 if node.left is None:
                     node.left = Node(_key, _value, None, None)
                 else:
-                    add_node(node.left, _key, _value)
+                    add_node(node.left, _key, _value)  # Go down to find out empty node
 
-            else:
+            else:  # No Key assigned yet at left node
                 if node.right is None:
                     node.right = Node(_key, _value, None, None)
                 else:
-                    add_node(node.right, _key, _value)
-            return True
+                    add_node(node.right, _key, _value)  # Go down to find out empty node
+            return True  # Return True after data assigned
 
         if self.root is None:
             self.root = Node(key, value, None, None)
@@ -111,12 +116,12 @@ class BinarySearchTree:
 
     def remove(self, key: Any) -> bool:
         p = self.root
-        parent = None
-        is_left_child = True
 
         while True:
             if p is None:
-                return False
+                return False  # Nothing to remove
+            parent = None
+            is_left_child = True
 
             if key == p.key:
                 break
@@ -166,15 +171,15 @@ class BinarySearchTree:
 
         def print_subtree(node: Node):
             if node is not None:
-                print_subtree(node.left)
+                print_subtree(node.left)  # Print left subtree ascendant order
                 print(f'{node.key} {node.value}')
-                print_subtree(node.right)
+                print_subtree(node.right)  # Print right subtree ascendant order
 
         def print_subtree_rev(node: Node):
             if node is not None:
-                print_subtree_rev(node.right)
+                print_subtree_rev(node.right)  # Print right subtree descendant order
                 print(f'{node.key} {node.value}')
-                print_subtree_rev(node.left)
+                print_subtree_rev(node.left)  # Print left subtree descendant order
 
         print_subtree_rev(self.root) if reverse else print_subtree(self.root)
 
@@ -182,7 +187,7 @@ class BinarySearchTree:
         if self.root is None:
             return None
         p = self.root
-        while p.left is not None:
+        while p.left is not None:  # Go down to the left side to find minimum key number
             p = p.left
         return p.key
 
@@ -190,12 +195,66 @@ class BinarySearchTree:
         if self.root is None:
             return None
         p = self.root
-        while p.right is not None:
+        while p.right is not None:   # Go down to the right side to find maximum key number
             p = p.right
         return p.key
 
 
+def key_insertion(purpose: str) -> int:
+    key = None
+    while key is None:
+        try:
+            temp = int(input(f'Enter key numbers to be {purpose}: ').strip())
+            if temp < 0:
+                raise TypeError
+            key = temp
+        except ValueError:
+            print('Enter integer number for key only!')
+        except TypeError:
+            print(f'Enter the key number bigger then 0!')
+    return key
+
+
+def run_menu(bst: BinarySearchTree) -> None:
+    while True:
+        menu = select_menu(Tree_Menu)
+
+        if menu == Tree_Menu.INSERT:  # Add node
+            key = key_insertion('created')
+            value = input('Enter the value of node to add: ')
+            if not bst.add(key, value):
+                print('Fail to add the data!')
+
+        elif menu == Tree_Menu.DELETE:  # Delete node by key number
+            key = key_insertion('deleted')
+            bst.remove(key)
+
+        elif menu == Tree_Menu.SEARCH:  # Search by key number
+            key = key_insertion('searched')
+            result = bst.search(key)
+            if result is not None:
+                print(f"The value of key '{key}': {result}")
+            else:
+                print(f"No value exists for key '{key}!")
+
+        elif menu == Tree_Menu.SHOW:  # Show the tree nodes
+            bst.dump()
+
+        elif menu == Tree_Menu.SHOW_REVERSE:  # Show the tree nodes reversely
+            bst.dump(reverse=True)
+
+        elif menu == Tree_Menu.KEY_RANGE:  # Print minimum and maximum key number
+            print(f'The minimum key number: {bst.min_key()}')
+            print(f'The maximum key number: {bst.max_key()}')
+
+        else:  # End the menu
+            break
+
+
+def binary_search_tree_test():
+    bst = BinarySearchTree()
+    run_menu(bst)
 
 
 if __name__ == '__main__':
-    print('To be continued')
+    binary_search_tree_test()
