@@ -1,4 +1,4 @@
-package com.example.basicalgorithmjava;
+package com.basicalgorithm;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
