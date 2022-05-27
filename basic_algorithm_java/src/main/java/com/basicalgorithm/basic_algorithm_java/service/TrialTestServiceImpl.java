@@ -20,4 +20,17 @@ public class TrialTestServiceImpl implements TrialTestService{
 
         return ResponseEntity.status(HttpStatus.OK).body(message);
     }
+
+    /**
+     * Explanation of the purpose of development
+     *
+     * @return String message to explain the purpose of developing
+     */
+    @Override
+    public ResponseEntity<Object> runAbout() {
+        String message = "This application is a record of my self-studying about Algorithm and Data Structure"
+                + " and practicing developing by Spring boot Framework!";
+
+        return ResponseEntity.status(HttpStatus.OK).body(message);
+    }
 }

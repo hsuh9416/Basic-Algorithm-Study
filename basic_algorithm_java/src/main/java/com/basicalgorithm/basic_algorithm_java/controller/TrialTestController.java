@@ -23,4 +23,13 @@ public class TrialTestController {
     public ResponseEntity<Object> runTest(){
             return trialTestService.runStatusChecking();
     }
+
+    @GetMapping(path="/about")
+    @ApiOperation(value = "Explain the purpose of developing", notes = "Explanation of the purpose of developing the application")
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "running normally"),
+            @ApiResponse( code = 400, message = "Bad Request"),
+            @ApiResponse( code = 500, message = "Internal Server Error") })
+    public ResponseEntity<Object> about(){
+        return trialTestService.runAbout();
+    }
 }

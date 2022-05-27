@@ -5,4 +5,6 @@ import org.springframework.http.ResponseEntity;
 public interface TrialTestService {
 
     ResponseEntity<Object> runStatusChecking();
+
+    ResponseEntity<Object> runAbout();
 }
