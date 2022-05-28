@@ -1,5 +1,6 @@
 package com.basicalgorithm.basic_algorithm_java.service;
 
+import com.basicalgorithm.basic_algorithm_java.domain.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -32,5 +33,11 @@ public class TrialTestServiceImpl implements TrialTestService{
                 + " and practicing developing by Spring boot Framework!";
 
         return ResponseEntity.status(HttpStatus.OK).body(message);
+    }
+
+    @Override
+    public ResponseEntity<Object> sendGreetingMsg(User user) {
+        User targetUser = User.builder().name(user.getName()).age(user.getAge()).major(user.getMajor()).build();
+        return ResponseEntity.status(HttpStatus.OK).body(targetUser.toString());
     }
 }
