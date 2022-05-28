@@ -9,5 +9,7 @@ public interface TrialTestService {
 
     ResponseEntity<Object> runAbout();
 
-    ResponseEntity<Object> sendGreetingMsg(User user);
+    ResponseEntity<Object> introducingPerson(User user);
+
+    ResponseEntity<Object> giveGreetingToUser(String name);
 }

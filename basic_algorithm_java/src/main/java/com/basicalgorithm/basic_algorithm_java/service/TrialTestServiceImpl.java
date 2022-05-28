@@ -1,6 +1,7 @@
 package com.basicalgorithm.basic_algorithm_java.service;
 
 import com.basicalgorithm.basic_algorithm_java.domain.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class TrialTestServiceImpl implements TrialTestService{
 
+    @Autowired
+    CommonFunction commonFunction;
 
     /**
      * Return message if status is normal
@@ -36,8 +39,15 @@ public class TrialTestServiceImpl implements TrialTestService{
     }
 
     @Override
-    public ResponseEntity<Object> sendGreetingMsg(User user) {
+    public ResponseEntity<Object> introducingPerson(User user) {
         User targetUser = User.builder().name(user.getName()).age(user.getAge()).major(user.getMajor()).build();
         return ResponseEntity.status(HttpStatus.OK).body(targetUser.toString());
+    }
+
+    @Override
+    public ResponseEntity<Object> giveGreetingToUser(String name) {
+        String dayOfWeek = commonFunction.getDayOfWeek(commonFunction.getTodayInfo());
+        String greeting = "Hi, "+ name + "! Nice to meet you:) Have a nice "+ dayOfWeek +"!";
+        return ResponseEntity.status(HttpStatus.OK).body(greeting);
     }
 }

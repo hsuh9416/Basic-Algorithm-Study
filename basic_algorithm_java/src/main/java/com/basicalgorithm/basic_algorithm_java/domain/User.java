@@ -15,7 +15,6 @@ public class User {
 
     @Override
     public String toString() {
-        return "Hello," + name + "! You are "+ age +" years old and majored in "+ major + "! Am I got right?\n"
-                + "Anyway nice to meet you and have a great day:)";
+        return name + " is "+ age +" years old and majored in "+ major + "!\nAm I got right? :)";
     }
 }

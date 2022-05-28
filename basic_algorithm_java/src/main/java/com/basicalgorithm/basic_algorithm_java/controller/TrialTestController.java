@@ -35,11 +35,20 @@ public class TrialTestController {
     }
 
     @PostMapping(path="/greeting")
-    @ApiOperation(value = "Simple post testing", notes = "Use Input parameter to complete greeting sentence.")
+    @ApiOperation(value = "Simple post testing1", notes = "Use Input parameter to complete greeting sentence.")
     @ApiResponses(value = { @ApiResponse(code = 200, message = "running normally"),
             @ApiResponse( code = 400, message = "Bad Request"),
             @ApiResponse( code = 500, message = "Internal Server Error") })
-    public ResponseEntity<Object> greeting(@RequestBody User user) {
-        return trialTestService.sendGreetingMsg(user);
+    public ResponseEntity<Object> greeting(@RequestParam("name") String name) {
+        return trialTestService.giveGreetingToUser(name);
+    }
+
+    @PostMapping(path="/introduce")
+    @ApiOperation(value = "Simple post testing2", notes = "Use Input parameter json to complete introducing sentence.")
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "running normally"),
+            @ApiResponse( code = 400, message = "Bad Request"),
+            @ApiResponse( code = 500, message = "Internal Server Error") })
+    public ResponseEntity<Object> introducing(@RequestBody User user) {
+        return trialTestService.introducingPerson(user);
     }
 }
