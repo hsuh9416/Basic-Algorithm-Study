@@ -16,7 +16,7 @@ def greeting(target_dt):
     :param target_dt: String of formatted datetime
     :return: None
     """
-    print(f"Hi, there! This is test script running!")
+    print(f"Hi, there! This is test script for 'basic-algorithm-python' running!")
     print(f"Current datetime is {target_dt}")
     print("I hope you enjoy your day!")
     print("HAPPY CODING:)")
