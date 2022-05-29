@@ -49,6 +49,11 @@ public class TrialTestServiceImpl implements TrialTestService{
         return ResponseEntity.status(HttpStatus.OK).body(targetUser.toString());
     }
 
+    /**
+     * Greeting person by received data (Post testing)
+     *
+     * @return String message to greet person with given information
+     */
     @Override
     public ResponseEntity<Object> giveGreetingToUser(String name) {
         String dayOfWeek = commonFunction.getDayOfWeek(commonFunction.getTodayInfo());
