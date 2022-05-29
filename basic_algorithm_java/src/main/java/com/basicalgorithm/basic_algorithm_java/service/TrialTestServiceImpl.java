@@ -38,6 +38,11 @@ public class TrialTestServiceImpl implements TrialTestService{
         return ResponseEntity.status(HttpStatus.OK).body(message);
     }
 
+    /**
+     * Introducing person by received data (Post testing)
+     *
+     * @return String message describing person by given information
+     */
     @Override
     public ResponseEntity<Object> introducingPerson(User user) {
         User targetUser = User.builder().name(user.getName()).age(user.getAge()).major(user.getMajor()).build();
