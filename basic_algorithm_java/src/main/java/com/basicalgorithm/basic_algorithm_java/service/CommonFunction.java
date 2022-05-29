@@ -9,6 +9,12 @@ public class CommonFunction {
     public Calendar getTodayInfo(){
         return Calendar.getInstance();
     }
+
+    /**
+     * Get today's day of week
+     * @param today Calendar instance
+     * @return String value of day of week
+     */
     public String getDayOfWeek(Calendar today){
         return switch (today.get(Calendar.DAY_OF_WEEK)) {
             case 1 -> "Sunday";
