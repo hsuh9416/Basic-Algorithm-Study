@@ -11,6 +11,7 @@
 
 """
 from typing import List
+import time
 
 
 # Solution: Using lambda and + operator
@@ -28,7 +29,6 @@ def reorder_logfiles(logs: List[str]) -> List[str]:
 
 
 def test_result(logs_input: List[str]) -> None:
-    import time
     start_1 = time.perf_counter()
     result = reorder_logfiles(logs_input)
     end_1 = time.perf_counter()
