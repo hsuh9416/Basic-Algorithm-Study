@@ -10,9 +10,6 @@ from typing import Deque
 import re
 import time
 
-input1 = "A man, a plan, a canal: Panama"
-input2 = "race a car"
-
 
 # Solution 1: Convert as list
 def is_palindrome_1(s: str) -> bool:
@@ -47,52 +44,43 @@ def is_palindrome_2(s: str) -> bool:
 # Slicing is internally implemented in C and efficient than standard while looping -> Because of pointer manipulation
 def is_palindrome_3(s: str) -> bool:
     s = s.lower()
-    s = re.sub('[^a-z0-9]','', s)
+    s = re.sub('[^a-z0-9]', '', s)
     return s == s[::-1]
 
 
-def test_result1():
-    start = time.perf_counter()
-    print(input1, '->', is_palindrome_1(input1))
-    end = time.perf_counter()
-    print('test 1 time elapsed:', end='')
-    print(end-start)
-    start = time.perf_counter()
-    print(input2, '->', is_palindrome_1(input2))
-    end = time.perf_counter()
-    print('test 2 time elapsed:', end='')
-    print(end-start)
+def test_result(text_input):
+    print(f'Input -> {text_input}')
 
+    start_1 = time.perf_counter()
+    print(f'Solution 1 Result: {is_palindrome_1(text_input)}')
+    end_1 = time.perf_counter()
+    time_elapsed_1 = end_1 - start_1
+    print(f'Solution 1 Time elapsed: {time_elapsed_1}')
 
+    start_2 = time.perf_counter()
+    print(f'Solution 2 Result: {is_palindrome_2(text_input)}')
+    end_2 = time.perf_counter()
+    time_elapsed_2 = end_2 - start_2
+    print(f'Solution 2 Time elapsed: {time_elapsed_2}')
 
-def test_result2():
-    start = time.perf_counter()
-    print(input1, '->', is_palindrome_2(input1))
-    end = time.perf_counter()
-    print('test 1 time elapsed:', end='')
-    print(end-start)
-    start = time.perf_counter()
-    print(input2, '->', is_palindrome_2(input2))
-    end = time.perf_counter()
-    print('test 2 time elapsed:', end='')
-    print(end-start)
+    start_3 = time.perf_counter()
+    print(f'Solution 3 Result: {is_palindrome_3(text_input)}')
+    end_3 = time.perf_counter()
+    time_elapsed_3 = end_3 - start_3
+    print(f'Solution 3 Time elapsed: {time_elapsed_3}')
 
-
-def test_result3():
-    start = time.perf_counter()
-    print(input1, '->', is_palindrome_3(input1))
-    end = time.perf_counter()
-    print('test 1 time elapsed:', end='')
-    print(end-start)
-    start = time.perf_counter()
-    print(input2, '->', is_palindrome_3(input2))
-    end = time.perf_counter()
-    print('test 2 time elapsed:', end='')
-    print(end-start)
+    result = min(time_elapsed_1, time_elapsed_2, time_elapsed_3)
+    if result == time_elapsed_1:
+        print("Solution 1 was the fastest!")
+    elif result == time_elapsed_2:
+        print("Solution 2 was the fastest!")
+    else:
+        print("Solution 3 was the fastest!")
 
 
 if __name__ == "__main__":
-    test_result1()
-    test_result2()
-    test_result3()
-
+    input1 = "A man, a plan, a canal: Panama"
+    test_result(input1)
+    print()
+    input2 = "race a car"
+    test_result(input2)
