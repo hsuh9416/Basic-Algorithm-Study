@@ -1,16 +1,15 @@
 """
-    Problem 2. Valid Palindrome
+    Problem 2. Reverse String
 
     Question: Make function that reverts given String array
     Source: leetcode 344 (https://leetcode.com/problems/reverse-string/
 
 """
-
-# Solution 1: Using two pointer
 import time
 from typing import List
 
 
+# Solution 1: Using two pointer
 def reverse_string_1(s: List[str]) -> None:
     left, right = 0, len(s) - 1
     while left < right:
@@ -19,7 +18,7 @@ def reverse_string_1(s: List[str]) -> None:
         right -= 1
 
 
-# Solution 1: Pythonic way
+# Solution 2: Pythonic way
 def reverse_string_2(s: List[str]) -> None:
     s.reverse()  # s[:] = s[::-1]
 
@@ -58,4 +57,3 @@ if __name__ == "__main__":
     print()
     list_input_2 = ['H', 'a', 'n', 'n', 'a', 'h']
     test_result(list_input_2)
-
