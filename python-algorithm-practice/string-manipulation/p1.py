@@ -52,21 +52,27 @@ def test_result(text_input):
     print(f'Input -> {text_input}')
 
     start_1 = time.perf_counter()
-    print(f'Solution 1 Result: {is_palindrome_1(text_input)}')
+    result_1 = is_palindrome_1(text_input)
     end_1 = time.perf_counter()
     time_elapsed_1 = end_1 - start_1
+
+    print(f'Solution 1 Result: {result_1}')
     print(f'Solution 1 Time elapsed: {time_elapsed_1}')
 
     start_2 = time.perf_counter()
-    print(f'Solution 2 Result: {is_palindrome_2(text_input)}')
+    result_2 = is_palindrome_2(text_input)
     end_2 = time.perf_counter()
     time_elapsed_2 = end_2 - start_2
+
+    print(f'Solution 2 Result: {result_2}')
     print(f'Solution 2 Time elapsed: {time_elapsed_2}')
 
     start_3 = time.perf_counter()
-    print(f'Solution 3 Result: {is_palindrome_3(text_input)}')
+    result_3 = is_palindrome_3(text_input)
     end_3 = time.perf_counter()
     time_elapsed_3 = end_3 - start_3
+
+    print(f'Solution 3 Result: {result_3}')
     print(f'Solution 3 Time elapsed: {time_elapsed_3}')
 
     result = min(time_elapsed_1, time_elapsed_2, time_elapsed_3)
