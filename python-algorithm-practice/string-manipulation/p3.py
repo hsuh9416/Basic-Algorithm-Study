@@ -41,4 +41,3 @@ def test_result(logs_input: List[str]) -> None:
 if __name__ == "__main__":
     input_example = ['dig1 8 1 5 1', 'let1 art can', 'dig2 3 6', 'let2 own kit dig', 'let3 art zero']
     test_result(input_example)
-    print()
