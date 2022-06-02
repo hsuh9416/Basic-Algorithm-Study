@@ -72,7 +72,8 @@ def test_result(arg_type: str, func_list: List, arg_val: List[int]) -> None:
 
         result_time.append(time_elapsed)
 
-    print(f"Solution {result_time.index(min(result_time)) + 1} was the fastest!")
+    if len(func_list) > 1:
+        print(f"Solution {result_time.index(min(result_time)) + 1} was the fastest!")
 
 
 if __name__ == "__main__":
