@@ -49,7 +49,7 @@ def two_sum_4(nums: List[int], target: int) -> List[int]:
             return [left, right]
 
 
-function_list = [two_sum_1, two_sum_2, two_sum_3, two_sum_4, ]
+function_list = [two_sum_1, two_sum_2, two_sum_3, two_sum_4]
 
 
 def test_result(nums: List[int], target: int) -> None:
