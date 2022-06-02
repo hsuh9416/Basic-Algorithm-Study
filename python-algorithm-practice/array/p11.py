@@ -3,6 +3,7 @@
 
     Question: Print out all product combination of given array
         * Excludes the array itself
+        * Do not divide
     Source: leetcode 238 (https://leetcode.com/problems/product-of-array-except-self/
 
 """
@@ -10,7 +11,7 @@ from typing import List
 from p8 import test_result
 
 
-# Solution: Using ascending order sort to find argmax that make min() as maximum
+# Solution: Multiply sequentially from left to right
 def product_except_self(nums: List[int]) -> List[int]:
     out = []
     p = 1
