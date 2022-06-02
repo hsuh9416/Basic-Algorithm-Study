@@ -56,14 +56,14 @@ def trap_2(heights: List[int]) -> int:
 function_list = [trap_1, trap_2]
 
 
-def test_result(heights: List[int]) -> None:
-    print(f'Given Height Info: {heights}')
+def test_result(arg_type: str, func_list: List, arg_val: List[int]) -> None:
+    print(f'Given {arg_type} Info: {arg_val}')
     result_time = []
-    for i in range(len(function_list)):
+    for i in range(len(func_list)):
         print()
 
         start = time.perf_counter()
-        result = function_list[i](heights)
+        result = func_list[i](arg_val)
         end = time.perf_counter()
         time_elapsed = end - start
 
@@ -77,4 +77,4 @@ def test_result(heights: List[int]) -> None:
 
 if __name__ == "__main__":
     height_list = [0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]
-    test_result(height_list)
+    test_result('Array', function_list, height_list)

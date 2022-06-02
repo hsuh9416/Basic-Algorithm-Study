@@ -5,8 +5,8 @@
     Source: leetcode 561 (https://leetcode.com/problems/array-partition-i/
 
 """
-import time
 from typing import List
+from p8 import test_result
 
 
 # Solution 1: Using ascending order sort to find argmax that make min() as maximum
@@ -44,25 +44,6 @@ def array_pair_sum_3(nums: List[int]) -> int:
 function_list = [array_pair_sum_1, array_pair_sum_2, array_pair_sum_3]
 
 
-def test_result(nums: List[int]) -> None:
-    print(f'Given Array Info: {nums}')
-
-    result_time = []
-
-    for i in range(len(function_list)):
-        start = time.perf_counter()
-        result = function_list[i](nums)
-        end = time.perf_counter()
-        time_elapsed = end - start
-
-        print(f'Solution {i + 1} Result: {result}')
-        print(f'Solution {i + 1}  Time elapsed: {time_elapsed}', end="\n\n")
-
-        result_time.append(time_elapsed)
-
-    print(f"Solution {result_time.index(min(result_time)) + 1} was the fastest!")
-
-
 if __name__ == "__main__":
     num_list = [1, 4, 3, 2]
-    test_result(num_list)
+    test_result('Array', function_list, num_list)
