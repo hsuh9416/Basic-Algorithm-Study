@@ -16,7 +16,7 @@ public class TrialTestController {
     private TrialTestService trialTestService;
 
 
-    @GetMapping(path="/runtTest")
+    @GetMapping(path="/runTest")
     @ApiOperation(value = "Status checking test", notes = "Test as trial REST request to check operation status whether runs normally")
     @ApiResponses(value = { @ApiResponse(code = 200, message = "running normally"),
                             @ApiResponse( code = 400, message = "Bad Request"),
