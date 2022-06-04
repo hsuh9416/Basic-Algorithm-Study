@@ -2,6 +2,31 @@ import time
 from typing import Any
 
 
+class ListNode:
+    def __init__(self, val=0, next_node=None):
+        self.val = val
+        self.next_node = next_node
+
+    def __repr__(self):
+        linked_list = self
+        object_print = '['
+        while True:
+            object_print += str(linked_list.val)
+            if linked_list.next_node is None:
+                break
+            object_print += '->'
+            linked_list = linked_list.next_node
+        return object_print + ']'
+
+
+def create_linked_list(head: list, idx=-1) -> Any:
+
+    if idx == len(head) - 1:
+        return None
+    else:
+        return ListNode(head[idx + 1], create_linked_list(head, idx + 1))
+
+
 def test_result(arg_type: str, func_list: Any, arg_val: Any) -> None:
     print(f'Given {arg_type} Info: {arg_val}')
     result_time = []

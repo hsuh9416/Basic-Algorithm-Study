@@ -9,33 +9,8 @@
 
 # class ListNode:
 import collections
-from typing import Optional, Any
-from common.common_function import test_result
-
-
-class ListNode:
-    def __init__(self, val=0, next_node=None):
-        self.val = val
-        self.next_node = next_node
-
-    def __repr__(self):
-        linked_list = self
-        object_print = '['
-        while True:
-            object_print += str(linked_list.val)
-            if linked_list.next_node is None:
-                break
-            object_print += '->'
-            linked_list = linked_list.next_node
-        return object_print + ']'
-
-
-def create_linked_list(head: list, idx=-1) -> Any:
-
-    if idx == len(head) - 1:
-        return None
-    else:
-        return ListNode(head[idx + 1], create_linked_list(head, idx + 1))
+from typing import Optional
+from common.common_function import ListNode, create_linked_list, test_result
 
 
 # Solution 1: Using list conversion
