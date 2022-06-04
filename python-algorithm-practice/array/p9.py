@@ -5,8 +5,8 @@
     Source: leetcode 15 (https://leetcode.com/problems/3sum/
 
 """
-import time
 from typing import List
+from common.common_function import test_result
 
 
 # Solution 1: Using brute-force algorithm
@@ -59,32 +59,9 @@ def three_sum_2(nums: List[int]) -> List[List[int]]:
     return results
 
 
-def test_result(nums: List[int]) -> None:
-    print(f'Given Array: {nums}')
-
-    start = time.perf_counter()
-    result = three_sum_1(nums)
-    end = time.perf_counter()
-    time_elapsed_1 = end - start
-    print(f'Solution 1 Result: {result}')
-    print(f'Solution 1  Time elapsed: {time_elapsed_1}')
-
-    print()
-
-    start = time.perf_counter()
-    result = three_sum_2(nums)
-    end = time.perf_counter()
-    time_elapsed_2 = end - start
-    print(f'Solution 2 Result: {result}')
-    print(f'Solution 2  Time elapsed: {time_elapsed_2}')
-
-    if time_elapsed_1 < time_elapsed_2:
-        print(f"Solution 1 was the faster!")
-    else:
-        print(f"Solution 2 was the faster!")
-
+function_list = [three_sum_1, three_sum_2]
 
 if __name__ == "__main__":
     num_list = [-1, 0, 1, 2, -1, -4]
 
-    test_result(num_list)
+    test_result('Array', function_list, num_list)

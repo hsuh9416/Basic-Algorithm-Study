@@ -5,8 +5,8 @@
     Source: leetcode 42 (https://leetcode.com/problems/trapping-rain-water/
 
 """
-import time
 from typing import List
+from common.common_function import test_result
 
 
 # Solution 1: Using two pointer
@@ -54,26 +54,6 @@ def trap_2(heights: List[int]) -> int:
 
 
 function_list = [trap_1, trap_2]
-
-
-def test_result(arg_type: str, func_list: List, arg_val: List[int]) -> None:
-    print(f'Given {arg_type} Info: {arg_val}')
-    result_time = []
-    for i in range(len(func_list)):
-        print()
-
-        start = time.perf_counter()
-        result = func_list[i](arg_val)
-        end = time.perf_counter()
-        time_elapsed = end - start
-
-        print(f'Solution {i + 1} Result: {result}')
-        print(f'Solution {i + 1}  Time elapsed: {time_elapsed}')
-
-        result_time.append(time_elapsed)
-
-    if len(func_list) > 1:
-        print(f"Solution {result_time.index(min(result_time)) + 1} was the fastest!")
 
 
 if __name__ == "__main__":

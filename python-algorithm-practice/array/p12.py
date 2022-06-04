@@ -7,7 +7,7 @@
 """
 import sys
 from typing import List
-from p8 import test_result
+from common.common_function import test_result
 
 
 # Solution 1: Using brute-force algorithm

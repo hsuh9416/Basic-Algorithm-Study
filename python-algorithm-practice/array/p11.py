@@ -8,7 +8,7 @@
 
 """
 from typing import List
-from p8 import test_result
+from common.common_function import test_result
 
 
 # Solution: Multiply sequentially from left to right
