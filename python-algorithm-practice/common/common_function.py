@@ -27,6 +27,18 @@ def create_linked_list(head: list, idx=-1) -> Any:
         return ListNode(head[idx + 1], create_linked_list(head, idx + 1))
 
 
+def test_result_single(idx: int, func_list: Any, arg_val: Any) -> float:
+    start = time.perf_counter()
+    result = func_list[idx](arg_val)
+    end = time.perf_counter()
+    time_elapsed = end - start
+
+    print(f'Solution {idx + 1} Result: {result}')
+    print(f'Solution {idx + 1}  Time elapsed: {time_elapsed}', end='\n\n')
+
+    return time_elapsed
+
+
 def test_result(arg_type: str, func_list: Any, arg_val: Any) -> None:
     print(f'Given {arg_type} Info: {arg_val}')
     result_time = []
