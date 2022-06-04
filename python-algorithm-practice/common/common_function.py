@@ -45,3 +45,22 @@ def test_result(arg_type: str, func_list: Any, arg_val: Any) -> None:
 
     if len(func_list) > 1:
         print(f"Solution {result_time.index(min(result_time)) + 1} was the fastest!")
+
+
+def test_result_2(arg_type: str, func_list: Any, arg_val_1: Any, arg_val_2: Any) -> None:
+    print(f'Given {arg_type} Info: {arg_val_1}, {arg_val_2}')
+    min_time = [0, 99999]
+    for i in range(len(func_list)):
+
+        start = time.perf_counter()
+        result = func_list[i](arg_val_1, arg_val_2)
+        end = time.perf_counter()
+        time_elapsed = end - start
+
+        print(f'Solution {i + 1} Result: {result}')
+        print(f'Solution {i + 1}  Time elapsed: {time_elapsed}', end='\n\n')
+
+        min_time = [i + 1, time_elapsed] if time_elapsed < min_time[1] else min_time
+
+    if len(func_list) > 1:
+        print(f"Solution {min_time[0]} was the fastest!")

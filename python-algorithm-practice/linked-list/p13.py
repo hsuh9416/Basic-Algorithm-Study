@@ -74,11 +74,8 @@ function_list = [is_palindrome_1, is_palindrome_2, is_palindrome_3]
 
 if __name__ == "__main__":
 
-    head_1 = [1, 2, 2, 1]
-    linked_list_1 = create_linked_list(head_1)
-
+    linked_list_1 = create_linked_list([1, 2, 2, 1])
     test_result('Linked List', function_list, linked_list_1)
     print()
-    head_2 = [1, 2]
-    linked_list_2 = create_linked_list(head_2)
+    linked_list_2 = create_linked_list([1, 2])
     test_result('Linked List', function_list, linked_list_2)
