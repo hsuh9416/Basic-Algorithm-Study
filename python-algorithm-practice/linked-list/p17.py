@@ -2,7 +2,7 @@
     Problem 17: Swap Nodes in Pairs
 
     Question: Swap given linked list in pairs
-    Source: leetcode 24 (https://leetcode.com/problems/swap=nodes-in-pairs/
+    Source: leetcode 24 (https://leetcode.com/problems/swap-nodes-in-pairs/
 
 """
 from common.common_function import ListNode, create_linked_list, test_result_single
