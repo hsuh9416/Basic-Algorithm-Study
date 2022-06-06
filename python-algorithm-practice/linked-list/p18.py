@@ -38,8 +38,3 @@ if __name__ == "__main__":
     linked_list_2 = create_linked_list([2, 1, 3, 5, 6, 4, 7])
     print(f'Given Linked_list 2 Info: {linked_list_2}')
     test_result_single(0, function_list, linked_list_2)
-
-
-
-
-
