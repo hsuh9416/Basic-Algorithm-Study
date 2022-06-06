@@ -35,5 +35,5 @@ function_list = [reverse_list_1, reverse_list_2]
 if __name__ == "__main__":
     linked_lists = [create_linked_list([1, 2, 3, 4, 5]) for i in range(len(function_list))]
     print(f'Given Linked_list Info: {linked_lists[0]}')
-    result_list = [test_result_single(0, function_list, linked_lists[i]) for i in range(len(function_list))]
+    result_list = [test_result_single(i, function_list, linked_lists[i]) for i in range(len(function_list))]
     print(f"Solution {result_list.index(min(result_list)) + 1} was the fastest!")
