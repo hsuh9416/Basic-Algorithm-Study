@@ -38,6 +38,17 @@ def linkedlist_to_list(node: ListNode) -> list:
     return result_list
 
 
+def test_function(func_name: str, func_obj: Any, *arg_val) -> None:
+    if len(arg_val) != 0:
+        print(f'Given input Info: {arg_val}')
+    start = time.perf_counter()
+    result = func_obj(*arg_val)
+    end = time.perf_counter()
+    time_elapsed = end - start
+    print(f'Function {func_name} Result: {result}') if result is not None else print(f'Function {func_name} completed!')
+    print(f'Function {func_name}  Time elapsed: {time_elapsed}', end='\n\n')
+
+
 def test_result_single(idx: int, func_list: Any, arg_val_1: Any, arg_val_2=None) -> float:
     if arg_val_2 is None:
         start = time.perf_counter()
