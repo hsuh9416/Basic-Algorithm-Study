@@ -6,7 +6,6 @@
 
 """
 import collections
-
 from common.common_function import test_result_2
 
 

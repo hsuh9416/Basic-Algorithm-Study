@@ -106,7 +106,8 @@ def test_result(arg_type: str, func_list: Any, arg_val: Any) -> None:
 
 
 def test_result_2(arg_type: str, func_list: Any, arg_val_1: Any, arg_val_2: Any) -> None:
-    print(f'Given {arg_type} Info: {arg_val_1}, {arg_val_2}')
+    print(f'Given {arg_type} Info: {arg_val_1}, {arg_val_2}', end='\n\n')
+
     min_time = [0, 99999]
     for i in range(len(func_list)):
 
