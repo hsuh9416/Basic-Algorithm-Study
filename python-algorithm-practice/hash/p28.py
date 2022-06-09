@@ -1,5 +1,5 @@
 """
-    Problem 19: Design HashMap
+    Problem 28: Design HashMap
 
     Question: Design a hashmap that applies following function
     * following function list:
