@@ -19,6 +19,24 @@ class ListNode:
         return object_print + ']'
 
 
+class ListNode2:
+    def __init__(self, key=None, value=None, next_node=None):
+        self.key = key
+        self.value = value
+        self.next_node = next_node
+
+    def __repr__(self):
+        linked_list = self
+        object_print = '['
+        while True:
+            object_print += f'({linked_list.key}":{linked_list.val})'
+            if linked_list.next_node is None:
+                break
+            object_print += '->'
+            linked_list = linked_list.next_node
+        return object_print + ']'
+
+
 def create_linked_list(head: list, idx=-1) -> Any:
 
     if idx == len(head) - 1:

@@ -71,13 +71,13 @@ class MyCircularDeque:
 
 
 if __name__ == "__main__":
-    circularQueue = MyCircularDeque(3)
-    test_function('insertLast', circularQueue.insert_last, 1)
-    test_function('insertLast', circularQueue.insert_last, 2)
-    test_function('insertFront', circularQueue.insert_front, 3)
-    test_function('insertFront', circularQueue.insert_front, 4)
-    test_function('getRear', circularQueue.get_rear)
-    test_function('isFull', circularQueue.is_full)
-    test_function('deleteLast', circularQueue.delete_last)
-    test_function('insertFront', circularQueue.insert_front, 4)
-    test_function('getFront', circularQueue.get_front)
+    circularDeque = MyCircularDeque(3)
+    test_function('insertLast', circularDeque.insert_last, 1)
+    test_function('insertLast', circularDeque.insert_last, 2)
+    test_function('insertFront', circularDeque.insert_front, 3)
+    test_function('insertFront', circularDeque.insert_front, 4)
+    test_function('getRear', circularDeque.get_rear)
+    test_function('isFull', circularDeque.is_full)
+    test_function('deleteLast', circularDeque.delete_last)
+    test_function('insertFront', circularDeque.insert_front, 4)
+    test_function('getFront', circularDeque.get_front)
