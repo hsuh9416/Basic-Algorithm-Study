@@ -49,4 +49,4 @@ if __name__ == "__main__":
       ["0", "0", "1", "0", "0"],
       ["0", "0", "0", "1", "1"]
     ]
-    test_result('Numbers', function_list, grid_map_2)
+    test_result('List', function_list, grid_map_2)
