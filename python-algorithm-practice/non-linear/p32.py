@@ -2,7 +2,7 @@
     Problem 32: Number of Islands
 
     Question: Given a 2D grid map assuming 1 as land and 0 as water, count the number of islands
-    Source: leetcode 347 (https://leetcode.com/problems/number-of-islands/
+    Source: leetcode 200 (https://leetcode.com/problems/number-of-islands/
 """
 from typing import List
 from common.common_function import test_result
