@@ -67,17 +67,11 @@ def test_function(func_name: str, func_obj: Any, *arg_val) -> None:
     print(f'Function {func_name}  Time elapsed: {time_elapsed}', end='\n\n')
 
 
-def test_result_single(idx: int, func_list: Any, arg_val_1: Any, arg_val_2=None) -> float:
-    if arg_val_2 is None:
-        start = time.perf_counter()
-        result = func_list[idx](arg_val_1)
-        end = time.perf_counter()
-        time_elapsed = end - start
-    else:
-        start = time.perf_counter()
-        result = func_list[idx](arg_val_1, arg_val_2)
-        end = time.perf_counter()
-        time_elapsed = end - start
+def test_result_single(idx: int, func_list: Any, *args) -> float:
+    start = time.perf_counter()
+    result = func_list[idx](*args)
+    end = time.perf_counter()
+    time_elapsed = end - start
 
     print(f'Solution {idx + 1} Result: {result}')
     print(f'Solution {idx + 1}  Time elapsed: {time_elapsed}', end='\n\n')

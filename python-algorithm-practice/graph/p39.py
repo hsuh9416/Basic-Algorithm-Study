@@ -1,5 +1,5 @@
 """
-    Problem 38: Course Schedule
+    Problem 39: Course Schedule
 
     Question: Determine whether all courses are complete
     * Conditions
