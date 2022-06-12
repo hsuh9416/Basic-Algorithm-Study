@@ -101,6 +101,8 @@ def test_result(arg_type: str, func_list: Any, arg_val: Any) -> None:
 
         result_time.append(time_elapsed)
 
+    print()
+
     if len(func_list) > 1:
         print(f"Solution {result_time.index(min(result_time)) + 1} was the fastest!")
 
