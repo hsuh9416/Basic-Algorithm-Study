@@ -2,6 +2,58 @@ import time
 from typing import Any
 
 
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+    def __repr__(self) -> str:
+        tree_node = pre_node = self
+        object_print = '['
+        right_flag = False
+        while True:
+            object_print += f"{tree_node.val}"
+            if right_flag:
+                if tree_node.left is None:
+                    break
+                else:
+                    object_print += f", null, null, "
+            else:
+                object_print += f", "
+            if tree_node.left is not None:
+                pre_node = tree_node
+                tree_node = tree_node.left
+                right_flag = False
+            else:
+                if pre_node.right is not None:
+                    tree_node = pre_node.right
+                    right_flag = True
+        return object_print + ']'
+
+    def __str__(self) -> str:
+        return str(self.val)
+
+
+def to_binary_tree(items: list[int]) -> Any:
+    """Create BT from list of values."""
+    n = len(items)
+    if n == 0:
+        return None
+
+    def inner(index: int = 0) -> Any:
+        """Closure function using recursion bo build tree"""
+        if n <= index or items[index] is None:
+            return None
+
+        node = TreeNode(items[index])
+        node.left = inner(2 * index + 1)
+        node.right = inner(2 * index + 2)
+        return node
+
+    return inner()
+
+
 class ListNode:
     def __init__(self, val=0, next_node=None):
         self.val = val
