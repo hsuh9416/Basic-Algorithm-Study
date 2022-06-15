@@ -124,8 +124,10 @@ def test_result_single(idx: int, func_list: Any, *args) -> float:
     result = func_list[idx](*args)
     end = time.perf_counter()
     time_elapsed = end - start
-
-    print(f'Solution {idx + 1} Result: {result}')
+    if result.__class__.__name__ == 'TreeNode':
+        print(f'Solution {idx + 1} Result: {repr(result)}')
+    else:
+        print(f'Solution {idx + 1} Result: {result}')
     print(f'Solution {idx + 1}  Time elapsed: {time_elapsed}', end='\n\n')
 
     return time_elapsed
