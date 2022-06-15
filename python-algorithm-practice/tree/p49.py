@@ -7,7 +7,7 @@
 """
 import collections
 from typing import List
-from common.common_function import test_result_single, to_binary_tree, serialize, TreeNode
+from common.common_function import test_result_single
 
 
 # Solution: Step by step leef node removal
