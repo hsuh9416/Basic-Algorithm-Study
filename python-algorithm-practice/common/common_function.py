@@ -78,6 +78,7 @@ class ListNode2:
         self.next_node = next_node
 
     def __repr__(self):
+        """ Todo: Should make more reasonable result!"""
         linked_list = self
         object_print = '['
         while True:
