@@ -1,3 +1,4 @@
+import collections
 import time
 from typing import Any
 
@@ -9,30 +10,51 @@ class TreeNode:
         self.right = right
 
     def __repr__(self) -> str:
-        tree_node = pre_node = self
-        object_print = '['
-        right_flag = False
-        while True:
-            object_print += f"{tree_node.val}"
-            if right_flag:
-                if tree_node.left is None:
-                    break
-                else:
-                    object_print += f", null, null, "
-            else:
-                object_print += f", "
-            if tree_node.left is not None:
-                pre_node = tree_node
-                tree_node = tree_node.left
-                right_flag = False
-            else:
-                if pre_node.right is not None:
-                    tree_node = pre_node.right
-                    right_flag = True
-        return object_print + ']'
+        return serialize(self)
 
     def __str__(self) -> str:
         return str(self.val)
+
+
+def serialize(root: TreeNode) -> str:
+    queue = collections.deque([root])
+    result = ['#']
+    while queue:
+        node = queue.popleft()
+        if node:
+            queue.append(node.left)
+            queue.append(node.right)
+
+            result.append(str(node.val))
+        else:
+            result.append('#')
+    return ' '.join(result)
+
+
+def deserialize(data: str) -> Any:
+    if data == '# #':
+        return None
+
+    nodes = data.split()
+
+    root = TreeNode(int(nodes[1]))
+    queue = collections.deque([root])
+    index = 2
+    while queue:
+        node = queue.popleft()
+        if nodes[index] != '#':
+            node.left = TreeNode(int(nodes[index]))
+            queue.append(node.left)
+
+        index += 1
+
+        if nodes[index] != '#':
+            node.right = TreeNode(int(nodes[index]))
+            queue.append(node.right)
+
+        index += 1
+
+    return root
 
 
 def to_binary_tree(items: list[int]) -> Any:
