@@ -5,7 +5,7 @@
     Source: leetcode 110 (https://leetcode.com/problems/balanced-binary-tree/
 
 """
-from common.common_function import test_result_single, to_binary_tree, serialize, deserialize, TreeNode
+from common.common_function import test_result_single, to_binary_tree, serialize, TreeNode
 
 
 # Solution: Calculate difference of height using recursive structure
