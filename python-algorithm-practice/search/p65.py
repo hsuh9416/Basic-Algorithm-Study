@@ -67,7 +67,6 @@ function_list = [binary_search_1, binary_search_2, binary_search_3, binary_searc
 if __name__ == "__main__":
     num_list = [-1, 0, 3, 5, 9, 12]
     num_target = 9
-    num_ks = [4 for i in range(len(function_list))]
     print(f"Given Input Info: nums = {num_list}, target = {num_target}", end='\n\n')
     result_lists = [test_result_single(i, function_list, num_list, num_target) for i in range(len(function_list))]
     print(f"Solution {result_lists.index(min(result_lists)) + 1} was the fastest!")

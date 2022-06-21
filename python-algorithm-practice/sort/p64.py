@@ -1,7 +1,7 @@
 """
     Problem 64: The Kth Closest Points to Origin
 
-    Question: print the list of points K closest to the origin (0, 0) in order by a list of points on the plane.
+    Question: Print the list of points K closest to the origin (0, 0) in order by a list of points on the plane.
     * The distance between two points on a plane is the Euclidean distance.
     Source: leetcode 973 (https://leetcode.com/problems/k-closest-points-to-origin/
 
