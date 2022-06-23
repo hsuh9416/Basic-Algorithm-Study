@@ -3,7 +3,7 @@
 
     Question: Return the two numeric indices of the array that can be added to form the target be given sorted array
     * Index starts from 1 instead of 0
-    Source: leetcode 349 (https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/
+    Source: leetcode 147 (https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/
 
 """
 import bisect
