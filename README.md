@@ -56,3 +56,4 @@
 ## Note
 
  - (05/29/2022) Java study is temporary stopped due to the other schedules
+ - (06/29/2022) Python study is temporary stopped due to the other schedules
